@@ -8,7 +8,6 @@ import java.sql.Date;
 
 public class BookDTO {
     private int id;
-
     private String title;
     private String description;
     private String genre;
