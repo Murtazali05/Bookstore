@@ -10,7 +10,6 @@ public class BookDTO {
     private int id;
     private String title;
     private String description;
-    private String genre;
     private Date pubyear;
     private BigDecimal price;
     private Photo photo;
@@ -19,7 +18,6 @@ public class BookDTO {
         id = book.getId();
         title = book.getTitle();
         description = book.getDescription();
-        genre = book.getGenre();
         pubyear = book.getPubyear();
         price = book.getPrice();
         photo = book.getPhoto();
@@ -47,14 +45,6 @@ public class BookDTO {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
     }
 
     public Date getPubyear() {

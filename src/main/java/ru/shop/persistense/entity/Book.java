@@ -12,7 +12,6 @@ public class Book {
     private int id;
     private String title;
     private String description;
-    private String genre;
     private Date pubyear;
     private BigDecimal price;
     private Photo photo;
@@ -55,16 +54,6 @@ public class Book {
     }
 
     @Basic
-    @Column(name = "genre", nullable = false, length = 45)
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    @Basic
     @Column(name = "pubyear", nullable = false)
     public Date getPubyear() {
         return pubyear;
@@ -92,7 +81,6 @@ public class Book {
         return id == that.id &&
                 Objects.equals(title, that.title) &&
                 Objects.equals(description, that.description) &&
-                Objects.equals(genre, that.genre) &&
                 Objects.equals(pubyear, that.pubyear) &&
                 Objects.equals(price, that.price);
     }
@@ -100,7 +88,7 @@ public class Book {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, title, description, genre, pubyear, price);
+        return Objects.hash(id, title, description, pubyear, price);
     }
 
     @ManyToOne

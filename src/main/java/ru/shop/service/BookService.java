@@ -20,7 +20,12 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public List<BookDTO> getAllBook(){
+    public BookDTO getBook(Integer id){
+        return new BookDTO(bookRepository.getOne(id));
+    }
+
+    @Transactional(readOnly = true)
+    public List<BookDTO> getBooks(){
         List<Book> books = bookRepository.findAll();
         List<BookDTO> bookDTOS = new ArrayList<>();
 

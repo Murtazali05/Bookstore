@@ -20,7 +20,7 @@ public class IndexController {
 
     @GetMapping("/")
     public String index(ModelMap map){
-        List<BookDTO> bookDTOList = bookService.getAllBook();
+        List<BookDTO> bookDTOList = bookService.getBooks();
 
         map.addAttribute("books", bookDTOList);
 
