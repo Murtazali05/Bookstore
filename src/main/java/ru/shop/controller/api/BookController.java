@@ -1,17 +1,14 @@
 package ru.shop.controller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.shop.service.BookService;
 import ru.shop.service.dto.BookDTO;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/book")
+@RequestMapping("api/books")
 public class BookController {
     private BookService bookService;
 
@@ -21,12 +18,13 @@ public class BookController {
     }
 
     @GetMapping
-    public List<BookDTO> getBooks(){
+    public List<BookDTO> getAll(){
         return bookService.getBooks();
     }
 
     @GetMapping("/{id}")
-    public BookDTO getBook(@PathVariable Integer id){
+    public BookDTO get(@PathVariable Integer id){
         return bookService.getBook(id);
     }
+
 }

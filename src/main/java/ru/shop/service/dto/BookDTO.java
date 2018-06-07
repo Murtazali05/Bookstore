@@ -7,27 +7,18 @@ import java.math.BigDecimal;
 import java.sql.Date;
 
 public class BookDTO {
-    private int id;
+    private Integer id;
     private String title;
     private String description;
     private Date pubyear;
     private BigDecimal price;
-    private Photo photo;
+    private PhotoDTO photo;
 
-    public BookDTO(Book book) {
-        id = book.getId();
-        title = book.getTitle();
-        description = book.getDescription();
-        pubyear = book.getPubyear();
-        price = book.getPrice();
-        photo = book.getPhoto();
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -63,11 +54,12 @@ public class BookDTO {
         this.price = price;
     }
 
-    public Photo getPhoto() {
+    public PhotoDTO getPhoto() {
         return photo;
     }
 
-    public void setPhoto(Photo photo) {
+    public void setPhoto(PhotoDTO photo) {
         this.photo = photo;
     }
+
 }
