@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.shop.service.BookService;
 import ru.shop.service.dto.BookDTO;
+import ru.shop.service.dto.PageDTO;
+import ru.shop.service.dto.PageShortDTO;
 
-import java.util.List;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("api/books")
@@ -18,8 +20,8 @@ public class BookController {
     }
 
     @GetMapping
-    public List<BookDTO> getAll(){
-        return bookService.getBooks();
+    public PageDTO<BookDTO> getAll(@Valid PageShortDTO page){
+        return bookService.getBooksByPage(page);
     }
 
     @GetMapping("/{id}")
@@ -27,9 +29,14 @@ public class BookController {
         return bookService.getBook(id);
     }
 
-    @GetMapping("/category/{code}")
-    public List<BookDTO> getBooksByCategory(@PathVariable String code){
-        return bookService.getBooksByCategory(code);
+    @GetMapping("/byCategory/{code}")
+    public PageDTO<BookDTO> getBooksByCategory(@PathVariable String code, @Valid PageShortDTO page){
+        return bookService.getBooksByCategory(code, page);
+    }
+
+    @GetMapping("/byAuthor/{id}")
+    public PageDTO<BookDTO> getBooksByAuthorId(@PathVariable Integer id, @Valid PageShortDTO page){
+        return bookService.getBooksByAuthor(id, page);
     }
 
 }
