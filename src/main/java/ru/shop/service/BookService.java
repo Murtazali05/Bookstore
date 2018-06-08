@@ -1,6 +1,8 @@
 package ru.shop.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.shop.service.mapper.BookMapper;
@@ -33,4 +35,10 @@ public class BookService {
     public List<BookDTO> getBooks(){
         return bookMapper.toDTOs(bookRepository.findAll());
     }
+
+    @Transactional(readOnly = true)
+    public List<BookDTO> getBooksByCategory(String code){
+        return bookMapper.toDTOs(bookRepository.findAllByCategoryCode(code));
+    }
+
 }

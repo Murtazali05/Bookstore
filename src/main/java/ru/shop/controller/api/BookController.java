@@ -27,4 +27,9 @@ public class BookController {
         return bookService.getBook(id);
     }
 
+    @GetMapping("/category/{code}")
+    public List<BookDTO> getBooksByCategory(@PathVariable String code){
+        return bookService.getBooksByCategory(code);
+    }
+
 }

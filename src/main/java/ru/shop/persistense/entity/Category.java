@@ -35,7 +35,7 @@ public class Category {
     }
 
     @Basic
-    @Column(name = "code", nullable = true, length = 255)
+    @Column(name = "code", nullable = false)
     public String getCode() {
         return code;
     }
