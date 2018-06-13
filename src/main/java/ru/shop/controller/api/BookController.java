@@ -1,5 +1,7 @@
 package ru.shop.controller.api;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.shop.service.BookService;
@@ -11,6 +13,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("api/books")
+@Api(tags = "Books")
 public class BookController {
     private BookService bookService;
 
@@ -19,6 +22,7 @@ public class BookController {
         this.bookService = bookService;
     }
 
+    @ApiOperation("")
     @GetMapping
     public PageDTO<BookDTO> getAll(@Valid PageShortDTO page){
         return bookService.getBooksByPage(page);
@@ -29,12 +33,12 @@ public class BookController {
         return bookService.getBook(id);
     }
 
-    @GetMapping("/byCategory/{code}")
+    @GetMapping("/category/{code}")
     public PageDTO<BookDTO> getBooksByCategory(@PathVariable String code, @Valid PageShortDTO page){
         return bookService.getBooksByCategory(code, page);
     }
 
-    @GetMapping("/byAuthor/{id}")
+    @GetMapping("/author/{id}")
     public PageDTO<BookDTO> getBooksByAuthorId(@PathVariable Integer id, @Valid PageShortDTO page){
         return bookService.getBooksByAuthor(id, page);
     }

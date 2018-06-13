@@ -1,8 +1,5 @@
 package ru.shop.service.dto;
 
-import ru.shop.persistense.entity.Book;
-import ru.shop.persistense.entity.Photo;
-
 import java.math.BigDecimal;
 import java.sql.Date;
 

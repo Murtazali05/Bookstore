@@ -1,16 +1,18 @@
 package ru.shop.service.dto;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 public class PageShortDTO {
     @NotNull
-    @Size(max=497)
-    Integer offset;
+    @Max(497)
+    private Integer offset;
 
     @NotNull
-    @Size(min=1, max=500)
-    Integer limit;
+    @Min(1)
+    @Max(500)
+    private Integer limit;
 
     public Integer getOffset() {
         return offset;

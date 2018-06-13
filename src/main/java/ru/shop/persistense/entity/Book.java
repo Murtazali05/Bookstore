@@ -15,6 +15,7 @@ public class Book {
     private Date pubyear;
     private BigDecimal price;
     private Photo photo;
+    private Date createdAt;
     private Collection<Cart> carts;
     private Collection<OrderDetails> orderDetails;
 
@@ -34,7 +35,7 @@ public class Book {
     }
 
     @Basic
-    @Column(name = "title", nullable = false, length = 255)
+    @Column(name = "title", nullable = false)
     public String getTitle() {
         return title;
     }
@@ -72,6 +73,17 @@ public class Book {
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
+
+    @Basic
+    @Column(name = "created_at", nullable = false)
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
 
     @Override
     public boolean equals(Object o) {

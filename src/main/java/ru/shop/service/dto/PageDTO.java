@@ -11,8 +11,8 @@ public class PageDTO<T> extends PageShortDTO{
 
     public PageDTO(Page page, List<T> dtoList) {
         this.content = dtoList;
-        this.offset = page.getNumber();
-        this.limit = page.getNumberOfElements();
+        this.setOffset(page.getNumber());
+        this.setLimit(page.getNumberOfElements());
         this.totalElements = page.getTotalElements();
         this.totalPages = page.getTotalPages();
     }
@@ -23,22 +23,6 @@ public class PageDTO<T> extends PageShortDTO{
 
     public void setContent(List<T> content) {
         this.content = content;
-    }
-
-    public Integer getOffset() {
-        return offset;
-    }
-
-    public void setOffset(Integer offset) {
-        this.offset = offset;
-    }
-
-    public Integer getLimit() {
-        return limit;
-    }
-
-    public void setLimit(Integer limit) {
-        this.limit = limit;
     }
 
     public Long getTotalElements() {
