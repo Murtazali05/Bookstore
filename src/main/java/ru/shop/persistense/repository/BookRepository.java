@@ -17,4 +17,7 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query("SELECT DISTINCT b FROM Book b INNER JOIN b.authors a WHERE a.id = :id")
     Page<Book> findAllByAuthorId(@Param("id") Integer id, Pageable pageable);
 
+    @Query(value = "SELECT DISTINCT b FROM book as b WHERE make_tsvector(b.title, b.description) @@ to_tsquery(:query)", nativeQuery = true)
+    Page<Book> findAllByQuery(@Param("query") String query, Pageable pageable);
+
 }

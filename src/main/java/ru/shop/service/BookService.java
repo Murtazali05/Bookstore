@@ -43,22 +43,29 @@ public class BookService {
 
     @Transactional(readOnly = true)
     public PageDTO<BookDTO> getBooksByPage(PageShortDTO pageShortDTO) {
-        Pageable pageable = PageRequest.of(pageShortDTO.getOffset(), pageShortDTO.getLimit(), Sort.Direction.ASC, "pubyear");
+        Pageable pageable = PageRequest.of(pageShortDTO.getOffset(), pageShortDTO.getLimit(), Sort.Direction.ASC, "createdAt");
         Page<Book> booksPage = bookRepository.findAll(pageable);
         return new PageDTO<>(booksPage, bookMapper.toDTOs(booksPage.getContent()));
     }
 
     @Transactional(readOnly = true)
     public PageDTO<BookDTO> getBooksByCategory(String code, PageShortDTO pageShortDTO){
-        Pageable pageable = PageRequest.of(pageShortDTO.getOffset(), pageShortDTO.getLimit(), Sort.Direction.ASC, "pubyear");
+        Pageable pageable = PageRequest.of(pageShortDTO.getOffset(), pageShortDTO.getLimit(), Sort.Direction.ASC, "createdAt");
         Page<Book> booksPage = bookRepository.findAllByCategoryCode(code, pageable);
         return new PageDTO<>(booksPage, bookMapper.toDTOs(booksPage.getContent()));
     }
 
     @Transactional(readOnly = true)
     public PageDTO<BookDTO> getBooksByAuthor(Integer authorId, PageShortDTO pageShortDTO) {
-        Pageable pageable = PageRequest.of(pageShortDTO.getOffset(), pageShortDTO.getLimit(), Sort.Direction.ASC, "pubyear");
+        Pageable pageable = PageRequest.of(pageShortDTO.getOffset(), pageShortDTO.getLimit(), Sort.Direction.ASC, "createdAt");
         Page<Book> booksPage = bookRepository.findAllByAuthorId(authorId, pageable);
+        return new PageDTO<>(booksPage, bookMapper.toDTOs(booksPage.getContent()));
+    }
+
+    @Transactional(readOnly = true)
+    public PageDTO<BookDTO> getBooksByQuery(String query, PageShortDTO pageShortDTO){
+        Pageable pageable = PageRequest.of(pageShortDTO.getOffset(), pageShortDTO.getLimit(), Sort.Direction.ASC, "createdAt");
+        Page<Book> booksPage = bookRepository.findAllByQuery(query, pageable);
         return new PageDTO<>(booksPage, bookMapper.toDTOs(booksPage.getContent()));
     }
 

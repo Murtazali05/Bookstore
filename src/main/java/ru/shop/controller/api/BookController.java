@@ -43,4 +43,9 @@ public class BookController {
         return bookService.getBooksByAuthor(id, page);
     }
 
+    @GetMapping("/search")
+    public PageDTO<BookDTO> searchByBook(String query, @Valid PageShortDTO page){
+        return bookService.getBooksByQuery(query, page);
+    }
+
 }
