@@ -10,9 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.shop.persistense.entity.Book;
 import ru.shop.service.dto.PageDTO;
 import ru.shop.service.dto.PageShortDTO;
+import ru.shop.service.dto.book.BookSaveDTO;
 import ru.shop.service.mapper.BookMapper;
 import ru.shop.persistense.repository.BookRepository;
 import ru.shop.service.dto.book.BookDTO;
+import ru.shop.service.mapper.BookSaveMapper;
 
 import java.util.List;
 
@@ -20,6 +22,7 @@ import java.util.List;
 public class BookService {
     private BookRepository bookRepository;
     private BookMapper bookMapper;
+    private BookSaveMapper bookSaveMapper;
 
     @Autowired
     public void setBookRepository(BookRepository bookRepository) {
@@ -29,6 +32,11 @@ public class BookService {
     @Autowired
     public void setBookMapper(BookMapper bookMapper) {
         this.bookMapper = bookMapper;
+    }
+
+    @Autowired
+    public void setBookSaveMapper(BookSaveMapper bookSaveMapper) {
+        this.bookSaveMapper = bookSaveMapper;
     }
 
     @Transactional(readOnly = true)
@@ -67,6 +75,26 @@ public class BookService {
         Pageable pageable = PageRequest.of(pageShortDTO.getOffset(), pageShortDTO.getLimit(), Sort.Direction.ASC, "created_at");
         Page<Book> booksPage = bookRepository.findAllByQuery(query, pageable);
         return new PageDTO<>(booksPage, bookMapper.toDTOs(booksPage.getContent()));
+    }
+
+    @Transactional
+    public BookDTO create(BookSaveDTO bookDTO) {
+        Book book = bookRepository.save(bookSaveMapper.toEntity(bookDTO));
+        return bookMapper.toDTO(book);
+    }
+
+    @Transactional
+    public BookDTO update(Integer bookId, BookSaveDTO bookDTO) {
+        Book book = bookSaveMapper.toEntity(bookDTO);
+        book.setId(bookId);
+        return bookMapper.toDTO(bookRepository.save(book));
+    }
+
+    @Transactional
+    public BookDTO delete(Integer bookId){
+        Book book = bookRepository.getOne(bookId);
+        bookRepository.delete(book);
+        return bookMapper.toDTO(book);
     }
 
 }

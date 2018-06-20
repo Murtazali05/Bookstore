@@ -1,10 +1,15 @@
 package ru.shop.service.dto.book;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-public class SaveBookDTO {
+public class BookSaveDTO {
     private String title;
     private String description;
+
+    @NotNull
+    @Min(0)
     private Integer pubyear;
     private BigDecimal price;
     private Integer photoId;

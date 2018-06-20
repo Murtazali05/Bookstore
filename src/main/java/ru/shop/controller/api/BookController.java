@@ -1,13 +1,13 @@
 package ru.shop.controller.api;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.shop.service.BookService;
 import ru.shop.service.dto.book.BookDTO;
 import ru.shop.service.dto.PageDTO;
 import ru.shop.service.dto.PageShortDTO;
+import ru.shop.service.dto.book.BookSaveDTO;
 
 import javax.validation.Valid;
 
@@ -22,7 +22,6 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @ApiOperation("")
     @GetMapping
     public PageDTO<BookDTO> getAll(@Valid PageShortDTO page){
         return bookService.getBooksByPage(page);
@@ -46,6 +45,21 @@ public class BookController {
     @GetMapping("/search")
     public PageDTO<BookDTO> searchByBook(String query, @Valid PageShortDTO page){
         return bookService.getBooksByQuery(query, page);
+    }
+
+    @PostMapping
+    public BookDTO create(@Valid @RequestBody BookSaveDTO bookDTO){
+        return bookService.create(bookDTO);
+    }
+
+    @PutMapping("/{id}")
+    public BookDTO update(@Valid @RequestBody BookSaveDTO bookDTO, @PathVariable("id") Integer id){
+        return bookService.update(id, bookDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public BookDTO delete(@PathVariable("id") Integer id){
+        return bookService.delete(id);
     }
 
 }

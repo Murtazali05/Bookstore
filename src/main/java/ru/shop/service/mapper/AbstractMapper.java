@@ -11,7 +11,7 @@ public abstract class AbstractMapper<Entity, DTO> implements IMapper<Entity, DTO
 
     private Class<DTO> dtoClass;
 
-    private ModelMapper modelMapper;
+    protected ModelMapper modelMapper;
 
     AbstractMapper(Class<Entity> entityClass, Class<DTO> dtoClass) {
         this.entityClass = entityClass;
