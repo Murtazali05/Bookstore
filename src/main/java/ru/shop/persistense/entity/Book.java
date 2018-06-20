@@ -12,7 +12,7 @@ public class Book {
     private int id;
     private String title;
     private String description;
-    private Date pubyear;
+    private int pubyear;
     private BigDecimal price;
     private Photo photo;
     private Date createdAt = new Date(System.currentTimeMillis());
@@ -56,11 +56,11 @@ public class Book {
 
     @Basic
     @Column(name = "pubyear", nullable = false)
-    public Date getPubyear() {
+    public int getPubyear() {
         return pubyear;
     }
 
-    public void setPubyear(Date pubyear) {
+    public void setPubyear(int pubyear) {
         this.pubyear = pubyear;
     }
 

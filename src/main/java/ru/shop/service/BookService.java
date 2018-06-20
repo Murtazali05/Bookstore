@@ -12,7 +12,7 @@ import ru.shop.service.dto.PageDTO;
 import ru.shop.service.dto.PageShortDTO;
 import ru.shop.service.mapper.BookMapper;
 import ru.shop.persistense.repository.BookRepository;
-import ru.shop.service.dto.BookDTO;
+import ru.shop.service.dto.book.BookDTO;
 
 import java.util.List;
 

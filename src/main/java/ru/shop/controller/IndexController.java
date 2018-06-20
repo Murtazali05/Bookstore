@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.shop.service.BookService;
-import ru.shop.service.dto.BookDTO;
+import ru.shop.service.dto.book.BookDTO;
 
 import java.util.List;
 

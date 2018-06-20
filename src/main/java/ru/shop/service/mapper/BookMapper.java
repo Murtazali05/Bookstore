@@ -2,7 +2,7 @@ package ru.shop.service.mapper;
 
 import org.springframework.stereotype.Component;
 import ru.shop.persistense.entity.Book;
-import ru.shop.service.dto.BookDTO;
+import ru.shop.service.dto.book.BookDTO;
 
 @Component
 public class BookMapper extends AbstractMapper<Book, BookDTO> {

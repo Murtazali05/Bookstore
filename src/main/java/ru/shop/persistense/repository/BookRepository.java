@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.shop.persistense.entity.Book;
-import ru.shop.service.dto.BookDTO;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Integer> {

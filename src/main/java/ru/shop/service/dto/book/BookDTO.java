@@ -1,13 +1,14 @@
-package ru.shop.service.dto;
+package ru.shop.service.dto.book;
+
+import ru.shop.service.dto.PhotoDTO;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 
 public class BookDTO {
     private Integer id;
     private String title;
     private String description;
-    private Date pubyear;
+    private Integer pubyear;
     private BigDecimal price;
     private PhotoDTO photo;
 
@@ -35,11 +36,11 @@ public class BookDTO {
         this.description = description;
     }
 
-    public Date getPubyear() {
+    public Integer getPubyear() {
         return pubyear;
     }
 
-    public void setPubyear(Date pubyear) {
+    public void setPubyear(Integer pubyear) {
         this.pubyear = pubyear;
     }
 

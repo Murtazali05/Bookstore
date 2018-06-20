@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.shop.service.BookService;
-import ru.shop.service.dto.BookDTO;
+import ru.shop.service.dto.book.BookDTO;
 import ru.shop.service.dto.PageDTO;
 import ru.shop.service.dto.PageShortDTO;
 
