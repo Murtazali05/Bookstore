@@ -64,7 +64,7 @@ public class BookService {
 
     @Transactional(readOnly = true)
     public PageDTO<BookDTO> getBooksByQuery(String query, PageShortDTO pageShortDTO){
-        Pageable pageable = PageRequest.of(pageShortDTO.getOffset(), pageShortDTO.getLimit(), Sort.Direction.ASC, "createdAt");
+        Pageable pageable = PageRequest.of(pageShortDTO.getOffset(), pageShortDTO.getLimit(), Sort.Direction.ASC, "created_at");
         Page<Book> booksPage = bookRepository.findAllByQuery(query, pageable);
         return new PageDTO<>(booksPage, bookMapper.toDTOs(booksPage.getContent()));
     }

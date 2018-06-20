@@ -15,7 +15,7 @@ public class Book {
     private Date pubyear;
     private BigDecimal price;
     private Photo photo;
-    private Date createdAt;
+    private Date createdAt = new Date(System.currentTimeMillis());
     private Collection<Cart> carts;
     private Collection<OrderDetails> orderDetails;
 

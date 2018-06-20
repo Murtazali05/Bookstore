@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.shop.persistense.entity.Book;
+import ru.shop.service.dto.BookDTO;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Integer> {
@@ -17,7 +18,9 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query("SELECT DISTINCT b FROM Book b INNER JOIN b.authors a WHERE a.id = :id")
     Page<Book> findAllByAuthorId(@Param("id") Integer id, Pageable pageable);
 
-    @Query(value = "SELECT DISTINCT b FROM book as b WHERE make_tsvector(b.title, b.description) @@ to_tsquery(:query)", nativeQuery = true)
-    Page<Book> findAllByQuery(@Param("query") String query, Pageable pageable);
+    @Query(value = "SELECT b.* FROM book as b WHERE make_tsvector(b.title, b.description) @@ to_tsquery(?1)",
+            countQuery = "SELECT count (b.*) FROM book as b WHERE make_tsvector(b.title, b.description) @@ to_tsquery(?1)",
+            nativeQuery = true)
+    Page<Book> findAllByQuery(String query, Pageable pageable);
 
 }
