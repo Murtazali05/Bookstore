@@ -1,6 +1,7 @@
 package ru.shop.controller.api;
 
 import io.swagger.annotations.Api;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.shop.service.BookService;
@@ -28,7 +29,7 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public BookDTO get(@PathVariable Integer id){
+    public BookDTO get(@PathVariable Integer id) throws NotFoundException {
         return bookService.getBook(id);
     }
 

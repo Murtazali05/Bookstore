@@ -1,5 +1,6 @@
 package ru.shop.service;
 
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,7 +41,10 @@ public class BookService {
     }
 
     @Transactional(readOnly = true)
-    public BookDTO getBook(Integer id){
+    public BookDTO getBook(Integer id) throws NotFoundException {
+        if (!bookRepository.existsById(id))
+            throw new NotFoundException("The book not found!");
+
         return bookMapper.toDTO(bookRepository.getOne(id));
     }
 
