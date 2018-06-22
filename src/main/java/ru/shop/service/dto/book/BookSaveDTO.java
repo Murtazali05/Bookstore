@@ -1,5 +1,6 @@
 package ru.shop.service.dto.book;
 
+import ru.shop.validator.annotation.ExistPhoto;
 import ru.shop.validator.annotation.PubYear;
 
 import javax.validation.constraints.*;
@@ -24,6 +25,7 @@ public class BookSaveDTO {
     private BigDecimal price;
 
     @NotNull
+    @ExistPhoto
     private Integer photoId;
 
     public String getTitle() {

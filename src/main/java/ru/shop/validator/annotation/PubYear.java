@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 @Documented
 public @interface PubYear {
 
-    String message() default "{год издания должен быть больше 0 и меньше или равен текущему году}";
+    String message() default "{validation.PubYear.message}"; // год издания должен быть больше 0 и меньше или равен текущему году
 
     Class<?>[] groups() default {};
 
