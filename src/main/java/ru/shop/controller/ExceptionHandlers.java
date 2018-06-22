@@ -21,7 +21,7 @@ public class ExceptionHandlers {
 
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorDTO handleException(Throwable ex){
+    public ErrorDTO handleThrowable(Throwable ex){
         String errId = UUID.randomUUID().toString();
         logger.error("Server Error, id = {}", errId);
 

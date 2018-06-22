@@ -1,5 +1,7 @@
 package ru.shop.service.dto.book;
 
+import ru.shop.validator.annotation.PubYear;
+
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
@@ -13,8 +15,7 @@ public class BookSaveDTO {
     private String description;
 
     @NotNull
-    @Min(0)
-    @Max(3000)
+    @PubYear
     private Integer pubyear;
 
     @NotNull
