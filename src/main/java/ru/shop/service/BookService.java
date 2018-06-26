@@ -12,10 +12,10 @@ import ru.shop.persistense.entity.Book;
 import ru.shop.service.dto.PageDTO;
 import ru.shop.service.dto.PageShortDTO;
 import ru.shop.service.dto.book.BookSaveDTO;
-import ru.shop.service.mapper.BookMapper;
+import ru.shop.service.mapper.book.BookMapper;
 import ru.shop.persistense.repository.BookRepository;
 import ru.shop.service.dto.book.BookDTO;
-import ru.shop.service.mapper.BookSaveMapper;
+import ru.shop.service.mapper.book.BookSaveMapper;
 
 import java.util.List;
 
@@ -88,14 +88,20 @@ public class BookService {
     }
 
     @Transactional
-    public BookDTO update(Integer bookId, BookSaveDTO bookDTO) {
+    public BookDTO update(Integer bookId, BookSaveDTO bookDTO) throws NotFoundException {
+        if (!bookRepository.existsById(bookId))
+            throw new NotFoundException("Book with such id=" + bookId + " does not exist!");
+
         Book book = bookSaveMapper.toEntity(bookDTO);
         book.setId(bookId);
         return bookMapper.toDTO(bookRepository.save(book));
     }
 
     @Transactional
-    public BookDTO delete(Integer bookId){
+    public BookDTO delete(Integer bookId) throws NotFoundException {
+        if (!bookRepository.existsById(bookId))
+            throw new NotFoundException("Book with such id=" + bookId + " does not exist!");
+
         Book book = bookRepository.getOne(bookId);
         bookRepository.delete(book);
         return bookMapper.toDTO(book);

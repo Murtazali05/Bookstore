@@ -11,7 +11,7 @@ public class Photo {
     private int id;
     private String path;
     private Integer size;
-    private Timestamp uploadedDate;
+    private Timestamp uploadedDate = new Timestamp(System.currentTimeMillis());
     private String hashFile;
     private Collection<Author> authors;
     private Collection<Book> books;
@@ -29,7 +29,7 @@ public class Photo {
     }
 
     @Basic
-    @Column(name = "path", nullable = false, length = 255)
+    @Column(name = "path", nullable = false)
     public String getPath() {
         return path;
     }
@@ -59,7 +59,7 @@ public class Photo {
     }
 
     @Basic
-    @Column(name = "hash_file", nullable = true, length = 255)
+    @Column(name = "hash_file", nullable = true)
     public String getHashFile() {
         return hashFile;
     }

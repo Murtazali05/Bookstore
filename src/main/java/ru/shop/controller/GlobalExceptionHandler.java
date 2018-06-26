@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.UUID;
 
 @RestControllerAdvice
-public class ExceptionHandlers {
-    private static Logger logger = LoggerFactory.getLogger(ExceptionHandlers.class);
+public class GlobalExceptionHandler {
+    private static Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

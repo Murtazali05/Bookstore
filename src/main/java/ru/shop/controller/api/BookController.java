@@ -54,12 +54,12 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public BookDTO update(@Valid @RequestBody BookSaveDTO bookDTO, @PathVariable("id") Integer id){
+    public BookDTO update(@Valid @RequestBody BookSaveDTO bookDTO, @PathVariable("id") Integer id) throws NotFoundException {
         return bookService.update(id, bookDTO);
     }
 
     @DeleteMapping("/{id}")
-    public BookDTO delete(@PathVariable("id") Integer id){
+    public BookDTO delete(@PathVariable("id") Integer id) throws NotFoundException {
         return bookService.delete(id);
     }
 
