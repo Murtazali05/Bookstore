@@ -58,8 +58,7 @@ public class CategoryService {
         if (!categoryRepository.existsById(categoryId))
             throw new NotFoundException("Category with such id=" + categoryId + " does not exist!");
 
-        Category category = categorySaveMapper.toEntity(categoryDTO);
-        category.setId(categoryId);
+        Category category = categorySaveMapper.toEntity(categoryId, categoryDTO);
         return categoryMapper.toDTO(categoryRepository.save(category));
     }
 

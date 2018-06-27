@@ -19,4 +19,10 @@ public class CategorySaveMapper extends AbstractMapper<Category, CategorySaveDTO
         return category;
     }
 
+    public Category toEntity(Integer categoryId, CategorySaveDTO categorySaveDTO) {
+        Category category = super.toEntity(categorySaveDTO);
+        category.setId(categoryId);
+        return category;
+    }
+
 }
