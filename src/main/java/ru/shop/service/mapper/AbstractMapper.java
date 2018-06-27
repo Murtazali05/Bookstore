@@ -1,5 +1,6 @@
 package ru.shop.service.mapper;
 
+import javassist.NotFoundException;
 import org.modelmapper.ModelMapper;
 
 import java.util.Collection;

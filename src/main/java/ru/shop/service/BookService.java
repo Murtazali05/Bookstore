@@ -92,8 +92,7 @@ public class BookService {
         if (!bookRepository.existsById(bookId))
             throw new NotFoundException("Book with such id=" + bookId + " does not exist!");
 
-        Book book = bookSaveMapper.toEntity(bookDTO);
-        book.setId(bookId);
+        Book book = bookSaveMapper.toEntity(bookId, bookDTO);
         return bookMapper.toDTO(bookRepository.save(book));
     }
 

@@ -5,11 +5,11 @@ import javax.validation.constraints.Size;
 
 public class CategorySaveDTO {
     @NotBlank
-    @Size(min=3, max=30)
+    @Size(min=3, max=45)
     private String name;
 
     @NotBlank
-    @Size(min=3, max=30)
+    @Size(min=3, max=45)
     private String code;
 
     public String getName() {

@@ -1,6 +1,6 @@
 package ru.shop.validator.annotation;
 
-import ru.shop.validator.handler.PubYearConstraintValidator;
+import ru.shop.validator.handler.PubYearValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -8,7 +8,7 @@ import java.lang.annotation.*;
 
 @Target( { ElementType.FIELD, ElementType.TYPE } )
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = PubYearConstraintValidator.class)
+@Constraint(validatedBy = PubYearValidator.class)
 @Documented
 public @interface PubYear {
 

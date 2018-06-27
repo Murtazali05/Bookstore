@@ -1,9 +1,5 @@
 package ru.shop.service.dto.category;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 public class CategoryDTO {
     private Integer id;
     private String name;
