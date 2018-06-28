@@ -4,7 +4,6 @@ import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.shop.controller.api.PhotoController;
 import ru.shop.persistense.entity.Photo;
 import ru.shop.persistense.repository.PhotoRepository;
 import ru.shop.service.dto.PhotoDTO;
