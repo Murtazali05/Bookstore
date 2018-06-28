@@ -7,9 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.shop.persistense.entity.Category;
 import ru.shop.persistense.repository.CategoryRepository;
 import ru.shop.service.dto.category.CategoryDTO;
-import ru.shop.service.dto.category.CategorySaveDTO;
 import ru.shop.service.mapper.category.CategoryMapper;
-import ru.shop.service.mapper.category.CategorySaveMapper;
 
 import java.util.List;
 
@@ -17,7 +15,6 @@ import java.util.List;
 public class CategoryService {
     private CategoryRepository categoryRepository;
     private CategoryMapper categoryMapper;
-    private CategorySaveMapper categorySaveMapper;
 
     @Autowired
     public void setCategoryRepository(CategoryRepository categoryRepository) {
@@ -27,11 +24,6 @@ public class CategoryService {
     @Autowired
     public void setCategoryMapper(CategoryMapper categoryMapper) {
         this.categoryMapper = categoryMapper;
-    }
-
-    @Autowired
-    public void setCategorySaveMapper(CategorySaveMapper categorySaveMapper) {
-        this.categorySaveMapper = categorySaveMapper;
     }
 
     @Transactional(readOnly = true)
@@ -48,17 +40,18 @@ public class CategoryService {
     }
 
     @Transactional
-    public CategoryDTO create(CategorySaveDTO categoryDTO) {
-        Category category = categoryRepository.save(categorySaveMapper.toEntity(categoryDTO));
+    public CategoryDTO create(CategoryDTO categoryDTO) {
+        Category category = categoryRepository.save(categoryMapper.toEntity(categoryDTO));
         return categoryMapper.toDTO(category);
     }
 
     @Transactional
-    public CategoryDTO update(Integer categoryId, CategorySaveDTO categoryDTO) throws NotFoundException {
+    public CategoryDTO update(Integer categoryId, CategoryDTO categoryDTO) throws NotFoundException {
         if (!categoryRepository.existsById(categoryId))
             throw new NotFoundException("Category with such id=" + categoryId + " does not exist!");
 
-        Category category = categorySaveMapper.toEntity(categoryId, categoryDTO);
+        categoryDTO.setId(categoryId);
+        Category category = categoryMapper.toEntity(categoryDTO);
         return categoryMapper.toDTO(categoryRepository.save(category));
     }
 

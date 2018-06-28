@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.shop.service.CategoryService;
 import ru.shop.service.dto.category.CategoryDTO;
-import ru.shop.service.dto.category.CategorySaveDTO;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -33,12 +32,12 @@ public class CategoryController {
     }
 
     @PostMapping
-    public CategoryDTO create(@Valid @RequestBody CategorySaveDTO categoryDTO){
+    public CategoryDTO create(@Valid @RequestBody CategoryDTO categoryDTO){
         return categoryService.create(categoryDTO);
     }
 
     @PutMapping("/{id}")
-    public CategoryDTO update(@Valid @RequestBody CategorySaveDTO categoryDTO, @PathVariable("id") Integer id) throws NotFoundException {
+    public CategoryDTO update(@Valid @RequestBody CategoryDTO categoryDTO, @PathVariable("id") Integer id) throws NotFoundException {
         return categoryService.update(id, categoryDTO);
     }
 

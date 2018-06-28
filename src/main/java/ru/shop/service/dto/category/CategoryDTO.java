@@ -1,15 +1,24 @@
 package ru.shop.service.dto.category;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 public class CategoryDTO {
-    private Integer id;
+    private int id;
+
+    @NotBlank
+    @Size(min=3, max=45)
     private String name;
+
+    @NotBlank
+    @Size(min=3, max=45)
     private String code;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
