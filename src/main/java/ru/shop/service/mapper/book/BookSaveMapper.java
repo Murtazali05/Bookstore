@@ -1,6 +1,5 @@
 package ru.shop.service.mapper.book;
 
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.shop.persistense.entity.Author;
@@ -11,7 +10,6 @@ import ru.shop.persistense.repository.*;
 import ru.shop.service.dto.book.BookSaveDTO;
 import ru.shop.service.mapper.AbstractMapper;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 
