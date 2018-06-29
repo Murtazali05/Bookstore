@@ -10,6 +10,7 @@ public class Category {
     private int id;
     private String name;
     private String code;
+    private Category parent;
 
     private Collection<Book> books;
 
@@ -58,6 +59,16 @@ public class Category {
     public int hashCode() {
 
         return Objects.hash(id, name, code);
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "parent_id", referencedColumnName = "id", nullable = false)
+    public Category getParent() {
+        return parent;
+    }
+
+    public void setParent(Category parent) {
+        this.parent = parent;
     }
 
     @ManyToMany

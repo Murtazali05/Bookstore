@@ -1,5 +1,8 @@
 package ru.shop.service.dto.category;
 
+import ru.shop.persistense.entity.Category;
+import ru.shop.validator.annotation.ExistEntity;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -13,6 +16,9 @@ public class CategoryDTO {
     @NotBlank
     @Size(min=3, max=45)
     private String code;
+
+    @ExistEntity(entityClass = Category.class)
+    private Integer parentId;
 
     public int getId() {
         return id;
@@ -38,4 +44,11 @@ public class CategoryDTO {
         this.code = code;
     }
 
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
 }
