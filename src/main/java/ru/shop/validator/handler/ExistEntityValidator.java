@@ -34,7 +34,9 @@ public class ExistEntityValidator implements ConstraintValidator<ExistEntity, Ob
     @SuppressWarnings("unchecked")
     public boolean isValid(Object entityID, ConstraintValidatorContext context) {
 
-        if (entityID instanceof Integer) {
+        if (entityID == null)
+            return true;
+        else if (entityID instanceof Integer) {
             return jpaRepository.existsById(entityID);
         } else if (entityID instanceof Collection<?>) {
             for (Integer id : (Collection<Integer>) entityID) {

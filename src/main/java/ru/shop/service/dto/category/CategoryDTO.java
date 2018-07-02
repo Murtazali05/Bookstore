@@ -51,4 +51,5 @@ public class CategoryDTO {
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
     }
+
 }

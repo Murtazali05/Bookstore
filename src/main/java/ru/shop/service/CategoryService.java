@@ -36,7 +36,9 @@ public class CategoryService {
         if (!categoryRepository.existsById(id))
             throw new NotFoundException("Category with such id=" + id + " does not found!");
 
-        return categoryMapper.toDTO(categoryRepository.getOne(id));
+        Category category = categoryRepository.getOne(id);
+        System.out.print(category.getParent().getName());
+        return categoryMapper.toDTO(category);
     }
 
     @Transactional

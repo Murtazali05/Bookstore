@@ -12,6 +12,7 @@ public class Category {
     private String code;
     private Category parent;
 
+    private Collection<Category> children;
     private Collection<Book> books;
 
     @Id
@@ -62,13 +63,23 @@ public class Category {
     }
 
     @ManyToOne
-    @JoinColumn(name = "parent_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "parent_id", referencedColumnName = "id")
     public Category getParent() {
         return parent;
     }
 
     public void setParent(Category parent) {
         this.parent = parent;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "parent_id")
+    public Collection<Category> getChildren() {
+        return children;
+    }
+
+    public void setChildren(Collection<Category> children) {
+        this.children = children;
     }
 
     @ManyToMany
@@ -82,4 +93,5 @@ public class Category {
     public void setBooks(Collection<Book> books) {
         this.books = books;
     }
+
 }
