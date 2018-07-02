@@ -17,7 +17,7 @@ public class User {
     private Date birthday;
     private Boolean confirmation;
     private String confirmCode;
-    private Timestamp registrationDate;
+    private Timestamp registrationDate = new Timestamp(System.currentTimeMillis());
     private Collection<Cart> carts;
     private Collection<Order> orders;
     private Role role;
@@ -65,7 +65,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "password", nullable = false, length = 255)
+    @Column(name = "password", nullable = false)
     public String getPassword() {
         return password;
     }
@@ -75,7 +75,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "birthday", nullable = true)
+    @Column(name = "birthday")
     public Date getBirthday() {
         return birthday;
     }
@@ -85,7 +85,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "confirmation", nullable = true)
+    @Column(name = "confirmation")
     public Boolean getConfirmation() {
         return confirmation;
     }
@@ -95,7 +95,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "confirm_code", nullable = true, length = 65535, columnDefinition = "text")
+    @Column(name = "confirm_code", length = 65535, columnDefinition = "text")
     public String getConfirmCode() {
         return confirmCode;
     }
@@ -105,7 +105,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "registration_date", nullable = true)
+    @Column(name = "registration_date")
     public Timestamp getRegistrationDate() {
         return registrationDate;
     }
