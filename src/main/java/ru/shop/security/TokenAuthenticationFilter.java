@@ -1,60 +1,45 @@
 package ru.shop.security;
 
-import com.google.common.base.Strings;
-import org.springframework.security.authentication.AuthenticationManager;
+import com.google.common.net.HttpHeaders;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.web.filter.GenericFilterBean;
-import ru.shop.exception.TokenAuthenticationHeaderNotFound;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class TokenAuthenticationFilter extends GenericFilterBean {
+public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+    private static final String BEARER = "Bearer";
 
-    private final AuthenticationManager authenticationManager;
-    private final AuthenticationEntryPoint authenticationEntryPoint;
-
-    private final String header;
-    private final boolean ignoreFault;
-
-    public TokenAuthenticationFilter(AuthenticationManager authenticationManager, AuthenticationEntryPoint authenticationEntryPoint, String header, boolean ignoreFault) {
-        this.authenticationManager = authenticationManager;
-        this.authenticationEntryPoint = authenticationEntryPoint;
-        this.header = header;
-        this.ignoreFault = ignoreFault;
+    protected TokenAuthenticationFilter(RequestMatcher requestMatcher) {
+        super(requestMatcher);
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
 
-        try {
-            String headerValue = httpServletRequest.getHeader(header);
-            if (Strings.isNullOrEmpty(headerValue)) {
-                throw new TokenAuthenticationHeaderNotFound("Header " + header + " is not found.", null);
-            }
+        final String token;
+        final String credentials = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (credentials == null)
+            throw new BadCredentialsException("{authentication.filter.credentialsNotFound.message}");
+        else if (!credentials.startsWith(BEARER))
+            throw new BadCredentialsException("{authentication.filter.credentialsNotValid.message}");
+        else
+            token = credentials.substring(BEARER.length());
 
-            Authentication authentication = authenticationManager.authenticate(new TokenAuthentication(headerValue));
+        return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(token, token));
+    }
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            chain.doFilter(request, response);
-        } catch (AuthenticationException authenticationException) {
-            if (!ignoreFault) {
-                authenticationEntryPoint.commence(httpServletRequest, httpServletResponse, authenticationException);
-            } else {
-                chain.doFilter(request, response);
-            }
-        }
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+        super.successfulAuthentication(request, response, chain, authResult);
+        chain.doFilter(request, response);
     }
 
 }
