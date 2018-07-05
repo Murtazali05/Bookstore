@@ -12,7 +12,7 @@ public class SecurityService {
         return Optional.empty();
     }
 
-    public Optional<UserDetails> authentication(String token) {
+    public Optional<UserDetails> findByToken(String token) {
         return Optional.empty();
     }
 

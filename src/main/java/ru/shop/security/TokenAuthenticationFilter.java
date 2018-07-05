@@ -17,7 +17,7 @@ import java.io.IOException;
 public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
     private static final String BEARER = "Bearer";
 
-    protected TokenAuthenticationFilter(RequestMatcher requestMatcher) {
+    public TokenAuthenticationFilter(RequestMatcher requestMatcher) {
         super(requestMatcher);
     }
 
