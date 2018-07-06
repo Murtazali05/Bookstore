@@ -23,7 +23,6 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-
         final String token;
         final String credentials = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (credentials == null)
