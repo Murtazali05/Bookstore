@@ -28,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         ru.shop.persistense.entity.User user = userRepository.findByEmail(email);
 
         if (user == null)
-            throw  new UsernameNotFoundException("User " + email + " not found.");
+            throw new UsernameNotFoundException("User " + email + " not found.");
 
         if (user.getRole() == null)
             throw new UsernameNotFoundException("User not authorized. No Roles assigned to user");

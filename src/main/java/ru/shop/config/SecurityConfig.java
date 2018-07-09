@@ -1,9 +1,13 @@
 package ru.shop.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -19,38 +23,35 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import ru.shop.security.NoRedirectStrategy;
 import ru.shop.security.TokenAuthenticationFilter;
 import ru.shop.security.TokenAuthenticationProvider;
+import ru.shop.service.dto.error.ErrorDTO;
+import ru.shop.service.dto.error.ErrorValidateDTO;
 
 import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private static final RequestMatcher SWAGGER_URLS = new OrRequestMatcher(
-            new AntPathRequestMatcher("/swagger-resources/**"),
-            new AntPathRequestMatcher("/configuration/**"),
-            new AntPathRequestMatcher("/webjars/**"),
-            new AntPathRequestMatcher("/swagger-ui.html"),
-            new AntPathRequestMatcher("/v2/api-docs")
+
+    private static final RequestMatcher PROTECTED_URLS = new OrRequestMatcher(
+            new AntPathRequestMatcher("/api/**","POST")
     );
 
-    private static final RequestMatcher PUBLIC_URLS = new OrRequestMatcher(
-            new AntPathRequestMatcher("/api/**", "GET")
-    );
-
-    private static final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(
-            new OrRequestMatcher(PUBLIC_URLS, SWAGGER_URLS)
-    );
-
-    @Autowired
     private TokenAuthenticationProvider provider;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(provider);
+    private ObjectMapper mapper;
+
+    @Autowired
+    public void setProvider(TokenAuthenticationProvider provider) {
+        this.provider = provider;
+    }
+
+    @Autowired
+    public void setMapper(ObjectMapper mapper) {
+        this.mapper = mapper;
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().requestMatchers(PROTECTED_URLS);
+    protected void configure(AuthenticationManagerBuilder auth) {
+        auth.authenticationProvider(provider);
     }
 
     @Override
@@ -62,6 +63,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authenticationProvider(provider)
                 .addFilterBefore(authenticationFilter(), AnonymousAuthenticationFilter.class)
+
+                .authorizeRequests()
+//                .antMatchers(HttpMethod.POST, "/api/**").authenticated()
+                .antMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
+                .and()
 
                 .csrf().disable()
                 .formLogin().disable()
@@ -88,9 +95,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private AuthenticationFailureHandler failureHandler() {
         return ((request, response, exception) -> {
-           response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-           response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
+            mapper.writeValue(response.getWriter(), new ErrorDTO(exception.getClass().getSimpleName(), exception.getMessage()));
         });
     }
 
@@ -100,6 +108,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
+            mapper.writeValue(response.getWriter(), new ErrorDTO(ex.getClass().getSimpleName(), ex.getMessage()));
         };
     }
 

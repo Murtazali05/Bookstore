@@ -22,9 +22,10 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         final String token;
         final String credentials = request.getHeader(HttpHeaders.AUTHORIZATION);
+
         if (credentials == null)
             throw new BadCredentialsException("{authentication.filter.credentialsNotFound.message}");
         else if (!credentials.startsWith(BEARER))
@@ -32,7 +33,7 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
         else
             token = credentials.substring(BEARER.length());
 
-        return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(token, token));
+        return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(null, token));
     }
 
     @Override
