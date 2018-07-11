@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorDTO handleThrowable(Throwable ex){
         String errId = UUID.randomUUID().toString();
-        logger.error("Server Error, id = {}", errId);
+        logger.error("Server Error, name={}, message={}, id = {}", ex.getClass().getSimpleName(), ex.getMessage(), errId);
 
         return new ErrorDTO(ex.getClass().getSimpleName(), ex.getMessage() + ", error id = " + errId);
     }
