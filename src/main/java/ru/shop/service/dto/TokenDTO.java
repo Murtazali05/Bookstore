@@ -3,15 +3,24 @@ package ru.shop.service.dto;
 import ru.shop.service.dto.user.UserDTO;
 
 public class TokenDTO {
-    private String token;
+    private String accessToken;
+    private String tokenType;
     private UserDTO userDTO;
 
-    public String getToken() {
-        return token;
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public String getTokenType() {
+        return tokenType;
+    }
+
+    public void setTokenType(String tokenType) {
+        this.tokenType = tokenType;
     }
 
     public UserDTO getUserDTO() {
@@ -21,4 +30,5 @@ public class TokenDTO {
     public void setUserDTO(UserDTO userDTO) {
         this.userDTO = userDTO;
     }
+
 }

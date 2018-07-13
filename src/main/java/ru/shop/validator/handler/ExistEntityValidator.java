@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.support.Repositories;
 import org.springframework.web.context.WebApplicationContext;
+import ru.shop.persistense.repository.UserRepository;
 import ru.shop.validator.annotation.ExistEntity;
 
 import javax.validation.ConstraintValidator;
@@ -32,20 +33,24 @@ public class ExistEntityValidator implements ConstraintValidator<ExistEntity, Ob
 
     @Override
     @SuppressWarnings("unchecked")
-    public boolean isValid(Object entityID, ConstraintValidatorContext context) {
+    public boolean isValid(Object entityObject, ConstraintValidatorContext context) {
 
-        if (entityID == null)
+        if (entityObject == null)
             return true;
-        else if (entityID instanceof Integer) {
-            return jpaRepository.existsById(entityID);
-        } else if (entityID instanceof Collection<?>) {
-            for (Integer id : (Collection<Integer>) entityID) {
+        else if (entityObject instanceof Integer) {
+            return jpaRepository.existsById(entityObject);
+        } else if (entityObject instanceof String) {
+            UserRepository userRepository = (UserRepository) jpaRepository;
+            Object result = userRepository.findByEmail(entityObject.toString());
+            return (result != null);
+        } else if (entityObject instanceof Collection<?>) {
+            for (Integer id : (Collection<Integer>) entityObject) {
                 if (!jpaRepository.existsById(id))
                     return false;
             }
             return true;
         } else
-            throw new IllegalArgumentException("A parameter with this type=" + entityID.getClass().getTypeName() + " is not processed by the annotation");
+            throw new IllegalArgumentException("A parameter with this type=" + entityObject.getClass().getTypeName() + " is not processed by the annotation");
 
     }
 

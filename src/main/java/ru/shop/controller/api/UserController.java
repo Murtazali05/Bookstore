@@ -8,6 +8,7 @@ import ru.shop.service.UserService;
 import ru.shop.service.dto.TokenDTO;
 import ru.shop.service.dto.user.UserCreateDTO;
 import ru.shop.service.dto.user.UserDTO;
+import ru.shop.service.dto.user.UserLoginDTO;
 
 import javax.validation.Valid;
 
@@ -27,15 +28,16 @@ public class UserController {
         return userService.getUser(id);
     }
 
+    @GetMapping("/login")
+    public TokenDTO login(@Valid UserLoginDTO userLoginDTO) {
+        return userService.login(userLoginDTO);
+    }
+
     @PostMapping
     public UserDTO registration(@Valid @RequestBody UserCreateDTO userDTO){
         return userService.create(userDTO);
     }
 
-    @PostMapping("/login")
-    public TokenDTO login(String email, String password) throws NotFoundException {
-        return userService.login(email, password);
-    }
     // confirm(email, code)
 
 }

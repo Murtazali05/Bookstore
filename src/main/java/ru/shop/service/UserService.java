@@ -9,9 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.shop.persistense.entity.User;
 import ru.shop.persistense.repository.UserRepository;
 import ru.shop.security.TokenUtil;
+import ru.shop.security.UserDetailsImpl;
 import ru.shop.service.dto.TokenDTO;
 import ru.shop.service.dto.user.UserCreateDTO;
 import ru.shop.service.dto.user.UserDTO;
+import ru.shop.service.dto.user.UserLoginDTO;
 import ru.shop.service.mapper.user.UserCreateMapper;
 import ru.shop.service.mapper.user.UserMapper;
 
@@ -57,29 +59,20 @@ public class UserService {
         return userMapper.toDTO(userRepository.getOne(id));
     }
 
-    @Transactional
-    public TokenDTO login(String email, String password) throws NotFoundException {
-        User user = userRepository.findByEmail(email);
+    @Transactional(readOnly = true)
+    public TokenDTO login(UserLoginDTO userDTO) {
+        User user = userRepository.findByEmail(userDTO.getEmail());
 
-        if (user == null)
-            throw new NotFoundException("The user not found by email=" + email);
-
-//        if (!passwordEncoder.matches(password, user.getPassword()))
-//            throw new BadCredentialsException("Invalid credentials. Wrong password!");
-
-        if (!password.equals(user.getPassword()))
+        if (!passwordEncoder.matches(userDTO.getPassword(), user.getPassword()))
             throw new BadCredentialsException("Invalid credentials. Wrong password!");
 
         TokenDTO tokenDTO = new TokenDTO();
-        tokenDTO.setToken(
+        tokenDTO.setAccessToken(
                 tokenUtil.generateToken(
-                        org.springframework.security.core.userdetails.User.builder()
-                                .username(user.getEmail())
-                                .password(user.getPassword())
-                                .roles(user.getRole().getName().toUpperCase())
-                                .build()
+                        new UserDetailsImpl(user.getId(), user.getEmail(), user.getPassword(), user.getRole().getName().toUpperCase())
                 )
         );
+        tokenDTO.setTokenType(tokenUtil.getTokenPrefix());
         tokenDTO.setUserDTO(userMapper.toDTO(user));
 
         return tokenDTO;

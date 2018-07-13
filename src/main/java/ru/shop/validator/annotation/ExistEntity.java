@@ -14,7 +14,7 @@ public @interface ExistEntity {
 
     Class<?> entityClass();
 
-    String message() default "{validation.ExistEntity.message}";
+    String message() default "{validation.ExistEntity.NotFound.message}";
 
     Class<?>[] groups() default {};
 
