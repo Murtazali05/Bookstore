@@ -4,6 +4,7 @@ import javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -21,7 +22,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorDTO handleThrowable(Throwable ex){
+    public ErrorDTO handleThrowable(Throwable ex) {
         String errId = UUID.randomUUID().toString();
         logger.error("Server Error, name={}, message={}, id = {}", ex.getClass().getSimpleName(), ex.getMessage(), errId);
 
@@ -30,7 +31,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorDTO handleNotFoundException(NotFoundException ex){
+    public ErrorDTO handleNotFoundException(NotFoundException ex) {
         logger.warn("404 error, name = {}, msg = {}", ex.getClass().getSimpleName(), ex.getMessage());
 
         return new ErrorDTO(ex.getClass().getSimpleName(), ex.getMessage());
@@ -38,19 +39,27 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({BindException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public List<ErrorValidateDTO> handleBindException(BindException ex){
+    public List<ErrorValidateDTO> handleBindException(BindException ex) {
         return this.handleBindingResult(ex.getClass().getSimpleName(), ex.getBindingResult());
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public List<ErrorValidateDTO> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex){
+    public List<ErrorValidateDTO> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         return handleBindingResult(ex.getClass().getSimpleName(), ex.getBindingResult());
     }
 
-    private List<ErrorValidateDTO> handleBindingResult(String name, BindingResult bindingResult){
+    @ExceptionHandler({BadCredentialsException.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorDTO handleBadCredentialsException(BadCredentialsException ex) {
+        logger.warn("401 exception, name = {}, msg = {}", ex.getClass().getSimpleName(), ex.getMessage());
+
+        return new ErrorDTO(ex.getClass().getSimpleName(), ex.getMessage());
+    }
+
+    private List<ErrorValidateDTO> handleBindingResult(String name, BindingResult bindingResult) {
         List<ErrorValidateDTO> errorDTOList = new ArrayList<>();
-        for (int i = 0; i < bindingResult.getAllErrors().size(); i++){
+        for (int i = 0; i < bindingResult.getAllErrors().size(); i++) {
             errorDTOList.add(new ErrorValidateDTO(name, bindingResult.getAllErrors().get(i).getDefaultMessage(), bindingResult.getFieldErrors().get(i).getField(), bindingResult.getAllErrors().get(i).getCode()));
         }
         return errorDTOList;

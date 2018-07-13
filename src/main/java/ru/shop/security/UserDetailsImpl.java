@@ -71,7 +71,7 @@ public class UserDetailsImpl implements UserDetails {
     private Set<GrantedAuthority> buildUserAuthorities(String role) {
         Set<GrantedAuthority> auth = new HashSet<>();
 
-        auth.add(new SimpleGrantedAuthority(String.format("ROLE_%s", role)));
+        auth.add(new SimpleGrantedAuthority(role));
 
         return auth;
     }
