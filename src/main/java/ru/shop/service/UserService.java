@@ -14,6 +14,7 @@ import ru.shop.service.dto.TokenDTO;
 import ru.shop.service.dto.user.UserCreateDTO;
 import ru.shop.service.dto.user.UserDTO;
 import ru.shop.service.dto.user.UserLoginDTO;
+import ru.shop.service.dto.user.UserUpdateDTO;
 import ru.shop.service.mapper.user.UserCreateMapper;
 import ru.shop.service.mapper.user.UserMapper;
 
@@ -25,6 +26,7 @@ public class UserService {
 
     private BCryptPasswordEncoder passwordEncoder;
     private TokenUtil tokenUtil;
+    private EmailService emailService;
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -49,6 +51,11 @@ public class UserService {
     @Autowired
     public void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @Autowired
+    public void setEmailService(EmailService emailService) {
+        this.emailService = emailService;
     }
 
     @Transactional(readOnly = true)
@@ -79,10 +86,41 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO create(UserCreateDTO userDTO) {
-        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        User user = userRepository.save(userCreateMapper.toEntity(userDTO));
-        return userMapper.toDTO(user);
+    public UserDTO create(UserCreateDTO userCreateDTO, String URL) {
+        userCreateDTO.setPassword(passwordEncoder.encode(userCreateDTO.getPassword()));
+        User user = userRepository.save(userCreateMapper.toEntity(userCreateDTO));
+
+        UserDTO userDTO = userMapper.toDTO(user);
+        emailService.sendEmail(userDTO, URL);
+        return userDTO;
+    }
+
+    @Transactional
+    public TokenDTO confirm(String token) {
+        User user = userRepository.findByConfirmCode(token);
+
+        if (user == null)
+            throw new IllegalArgumentException("Token is not valid!");
+
+        user.setConfirmation(true);
+        userRepository.save(user);
+
+        TokenDTO tokenDTO = new TokenDTO();
+        tokenDTO.setAccessToken(
+                tokenUtil.generateToken(
+                        new UserDetailsImpl(user.getId(), user.getEmail(), user.getPassword(), user.getRole().getName().toUpperCase())
+                )
+        );
+        tokenDTO.setTokenType(tokenUtil.getTokenPrefix());
+        tokenDTO.setUserDTO(userMapper.toDTO(user));
+
+        return tokenDTO;
+    }
+
+    @Transactional
+    public UserDTO update(Integer id, UserUpdateDTO userDTO) {
+
+        return new UserDTO();
     }
 
 }

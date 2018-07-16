@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX user_confirm_code_uindex ON shop."user" (confirm_code);
