@@ -14,7 +14,6 @@ import ru.shop.service.dto.TokenDTO;
 import ru.shop.service.dto.user.UserCreateDTO;
 import ru.shop.service.dto.user.UserDTO;
 import ru.shop.service.dto.user.UserLoginDTO;
-import ru.shop.service.dto.user.UserUpdateDTO;
 import ru.shop.service.mapper.user.UserCreateMapper;
 import ru.shop.service.mapper.user.UserMapper;
 
@@ -102,6 +101,7 @@ public class UserService {
         if (user == null)
             throw new IllegalArgumentException("Token is not valid!");
 
+        user.setConfirmCode("");
         user.setConfirmation(true);
         userRepository.save(user);
 
@@ -115,12 +115,6 @@ public class UserService {
         tokenDTO.setUserDTO(userMapper.toDTO(user));
 
         return tokenDTO;
-    }
-
-    @Transactional
-    public UserDTO update(Integer id, UserUpdateDTO userDTO) {
-
-        return new UserDTO();
     }
 
 }

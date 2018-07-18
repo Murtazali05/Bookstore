@@ -9,6 +9,7 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import ru.shop.exception.AlreadyExistsException;
 import ru.shop.service.dto.error.ErrorValidateDTO;
 import ru.shop.service.dto.error.ErrorDTO;
 
@@ -53,6 +54,14 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ErrorDTO handleBadCredentialsException(BadCredentialsException ex) {
         logger.warn("401 exception, name = {}, msg = {}", ex.getClass().getSimpleName(), ex.getMessage());
+
+        return new ErrorDTO(ex.getClass().getSimpleName(), ex.getMessage());
+    }
+
+    @ExceptionHandler(AlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorDTO handleAlreadyExistsException(AlreadyExistsException ex) {
+        logger.warn("409 exception, name = {}, msg = {}", ex.getClass().getSimpleName(), ex.getMessage());
 
         return new ErrorDTO(ex.getClass().getSimpleName(), ex.getMessage());
     }

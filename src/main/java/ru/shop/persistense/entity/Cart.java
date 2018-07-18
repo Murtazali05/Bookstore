@@ -5,21 +5,30 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "cart", schema = "shop", catalog = "bookstore")
+@AssociationOverrides({
+        @AssociationOverride(name = "pk.user", joinColumns = @JoinColumn(name = "user_id")),
+        @AssociationOverride(name = "pk.book", joinColumns = @JoinColumn(name = "book_id"))
+})
 public class Cart {
-    private int id;
-    private int count;
-    private User user;
-    private Book book;
+    @EmbeddedId
+    private CartPK pk;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    public int getId() {
-        return id;
+    private int count;
+
+    public Cart() {
+        pk = new CartPK();
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Cart(CartPK pk) {
+        this.pk = pk;
+    }
+
+    public CartPK getPk() {
+        return pk;
+    }
+
+    public void setPk(CartPK pk) {
+        this.pk = pk;
     }
 
     @Basic
@@ -36,34 +45,32 @@ public class Cart {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Cart that = (Cart) o;
-        return id == that.id &&
-                count == that.count;
+        Cart cart = (Cart) o;
+        return count == cart.count &&
+                Objects.equals(pk, cart.pk);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, count);
+        return Objects.hash(pk, count);
     }
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @Transient
     public User getUser() {
-        return user;
+        return pk.getUser();
     }
 
     public void setUser(User user) {
-        this.user = user;
+        pk.setUser(user);
     }
 
-    @ManyToOne
-    @JoinColumn(name = "book_id", referencedColumnName = "id", nullable = false)
+    @Transient
     public Book getBook() {
-        return book;
+        return pk.getBook();
     }
 
     public void setBook(Book book) {
-        this.book = book;
+        pk.setBook(book);
     }
 }

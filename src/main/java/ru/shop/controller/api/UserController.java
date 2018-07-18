@@ -9,7 +9,6 @@ import ru.shop.service.dto.TokenDTO;
 import ru.shop.service.dto.user.UserCreateDTO;
 import ru.shop.service.dto.user.UserDTO;
 import ru.shop.service.dto.user.UserLoginDTO;
-import ru.shop.service.dto.user.UserUpdateDTO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -43,11 +42,6 @@ public class UserController {
     @GetMapping("/login")
     public TokenDTO login(@Valid UserLoginDTO userLoginDTO) {
         return userService.login(userLoginDTO);
-    }
-
-    @PutMapping("/{id}")
-    public UserDTO update(@Valid @RequestBody UserUpdateDTO userDTO, @PathVariable("id") Integer id) {
-        return userService.update(id, userDTO);
     }
 
 }

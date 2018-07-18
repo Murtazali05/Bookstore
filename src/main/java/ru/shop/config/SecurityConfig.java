@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.*;
 import org.springframework.security.web.util.matcher.*;
@@ -34,8 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     );
 
     private static final RequestMatcher PUBLIC_URLS = new OrRequestMatcher(
-            new AntPathRequestMatcher("/api/**", "GET"),
-            new AntPathRequestMatcher("/api/users", "POST")
+            new AntPathRequestMatcher("/api/users/**", "GET"),
+            new AntPathRequestMatcher("/api/users/", "POST")
     );
 
     private static final RequestMatcher PROTECTED_URLS = new AndRequestMatcher(
