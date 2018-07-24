@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.shop.persistense.entity.User;
+import ru.shop.persistense.repository.RoleRepository;
 import ru.shop.persistense.repository.UserRepository;
 import ru.shop.security.TokenUtil;
 import ru.shop.security.UserDetailsImpl;
@@ -17,6 +18,8 @@ import ru.shop.service.dto.user.UserLoginDTO;
 import ru.shop.service.mapper.user.UserCreateMapper;
 import ru.shop.service.mapper.user.UserMapper;
 
+import java.util.UUID;
+
 @Service
 public class UserService {
     private UserRepository userRepository;
@@ -26,6 +29,7 @@ public class UserService {
     private BCryptPasswordEncoder passwordEncoder;
     private TokenUtil tokenUtil;
     private EmailService emailService;
+    private RoleRepository roleRepository;
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -55,6 +59,11 @@ public class UserService {
     @Autowired
     public void setEmailService(EmailService emailService) {
         this.emailService = emailService;
+    }
+
+    @Autowired
+    public void setRoleRepository(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
     }
 
     @Transactional(readOnly = true)
@@ -87,9 +96,13 @@ public class UserService {
     @Transactional
     public UserDTO create(UserCreateDTO userCreateDTO, String URL) {
         userCreateDTO.setPassword(passwordEncoder.encode(userCreateDTO.getPassword()));
-        User user = userRepository.save(userCreateMapper.toEntity(userCreateDTO));
+        User user = userCreateMapper.toEntity(userCreateDTO);
+        user.setConfirmation(false);
+        UUID uuid = UUID.randomUUID();
+        user.setConfirmCode(uuid.toString());
+        user.setRole(roleRepository.getOne(3));
 
-        UserDTO userDTO = userMapper.toDTO(user);
+        UserDTO userDTO = userMapper.toDTO(userRepository.save(user));
         emailService.sendEmail(userDTO, URL);
         return userDTO;
     }
