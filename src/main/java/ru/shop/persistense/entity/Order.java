@@ -9,11 +9,11 @@ import java.util.Objects;
 @Table(name = "order", schema = "shop", catalog = "bookstore")
 public class Order {
     private int id;
-    private Timestamp orderDate;
+    private Timestamp orderDate = new Timestamp(System.currentTimeMillis());
     private String address;
     private String deliveryMethod;
     private String paymentMethod;
-    private String status;
+    private Status status;
     private User user;
     private Collection<OrderDetails> orderDetails;
 
@@ -68,16 +68,6 @@ public class Order {
         this.paymentMethod = paymentMethod;
     }
 
-    @Basic
-    @Column(name = "status", nullable = false, length = 45)
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -98,6 +88,16 @@ public class Order {
     }
 
     @ManyToOne
+    @JoinColumn(name = "status_id", referencedColumnName = "id", nullable = false)
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     public User getUser() {
         return user;
@@ -107,7 +107,7 @@ public class Order {
         this.user = user;
     }
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "pk.order")
     public Collection<OrderDetails> getOrderDetails() {
         return orderDetails;
     }
