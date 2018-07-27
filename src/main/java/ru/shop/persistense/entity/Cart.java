@@ -5,15 +5,19 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "cart", schema = "shop", catalog = "bookstore")
-@AssociationOverrides({
-        @AssociationOverride(name = "pk.user", joinColumns = @JoinColumn(name = "user_id")),
-        @AssociationOverride(name = "pk.book", joinColumns = @JoinColumn(name = "book_id"))
-})
 public class Cart {
     @EmbeddedId
     private CartPK pk;
 
     private int count;
+
+    @ManyToOne
+    @MapsId("userId")
+    private User user;
+
+    @ManyToOne
+    @MapsId("bookId")
+    private Book book;
 
     public Cart() {
         pk = new CartPK();
@@ -47,30 +51,30 @@ public class Cart {
         if (o == null || getClass() != o.getClass()) return false;
         Cart cart = (Cart) o;
         return count == cart.count &&
-                Objects.equals(pk, cart.pk);
+                Objects.equals(pk, cart.pk) &&
+                Objects.equals(user, cart.user) &&
+                Objects.equals(book, cart.book);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(pk, count);
+        return Objects.hash(pk, count, user, book);
     }
 
-    @Transient
     public User getUser() {
-        return pk.getUser();
+        return user;
     }
 
     public void setUser(User user) {
-        pk.setUser(user);
+        this.user = user;
     }
 
-    @Transient
     public Book getBook() {
-        return pk.getBook();
+        return book;
     }
 
     public void setBook(Book book) {
-        pk.setBook(book);
+        this.book = book;
     }
 }

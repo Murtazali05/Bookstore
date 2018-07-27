@@ -52,14 +52,13 @@ public class CartService {
         if (!bookRepository.existsById(bookId))
             throw new NotFoundException("Book with such id=" + bookId + " does not exist!");
 
-        Book book = bookRepository.getOne(bookId);
-        User user = userRepository.findOneById(userId);
-
-        CartPK pk = new CartPK(book, user);
+        CartPK pk = new CartPK(userId, bookId);
         if (cartRepository.existsById(pk))
             throw new AlreadyExistsException("Book with id=" + bookId + " for this user already exist!");
 
         Cart cart = new Cart(pk);
+        cart.setBook(bookRepository.getOne(bookId));
+        cart.setUser(userRepository.getOne(userId));
         cart.setCount(1);
 
         return cartMapper.toDTO(cartRepository.save(cart));
@@ -67,7 +66,7 @@ public class CartService {
 
     @Transactional(readOnly = true)
     public CartDTO getCart(Integer userId) {
-        User user = userRepository.findOneById(userId);
+        User user = userRepository.getOne(userId);
         Collection<Cart> carts = user.getCarts();
 
         CartDTO cartDTO = new CartDTO();
@@ -78,10 +77,7 @@ public class CartService {
 
     @Transactional
     public BookInCartDTO update(Integer bookId, Integer userId, Integer count) throws NotFoundException {
-        Book book = bookRepository.getOne(bookId);
-        User user = userRepository.findOneById(userId);
-
-        CartPK pk = new CartPK(book, user);
+        CartPK pk = new CartPK(userId, bookId);
         if (!cartRepository.existsById(pk))
             throw new NotFoundException("Product with bookId=" + bookId + " and userId=" + userId + " does not exist in cart!");
 
@@ -96,10 +92,7 @@ public class CartService {
 
     @Transactional
     public BookInCartDTO delete(Integer bookId, Integer userId) throws NotFoundException {
-        Book book = bookRepository.getOne(bookId);
-        User user = userRepository.findOneById(userId);
-
-        CartPK pk = new CartPK(book, user);
+        CartPK pk = new CartPK(userId, bookId);
         if (!cartRepository.existsById(pk))
             throw new NotFoundException("Product with bookId=" + bookId + " and userId=" + userId + " does not exist in cart!");
 

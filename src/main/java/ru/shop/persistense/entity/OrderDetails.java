@@ -5,22 +5,22 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "order_details", schema = "shop", catalog = "bookstore")
-@AssociationOverrides({
-        @AssociationOverride(name = "pk.order", joinColumns = @JoinColumn(name = "order_id")),
-        @AssociationOverride(name = "pk.book", joinColumns = @JoinColumn(name = "book_id"))
-})
 public class OrderDetails {
     @EmbeddedId
     private OrderDetailsPK pk;
 
     private int count;
 
+    @ManyToOne
+    @MapsId("orderId")
+    private Order order;
+
+    @ManyToOne
+    @MapsId("bookId")
+    private Book book;
+
     public OrderDetails() {
         this.pk = new OrderDetailsPK();
-    }
-
-    public OrderDetails(OrderDetailsPK pk) {
-        this.pk = pk;
     }
 
     public OrderDetailsPK getPk() {
@@ -47,28 +47,30 @@ public class OrderDetails {
         if (o == null || getClass() != o.getClass()) return false;
         OrderDetails that = (OrderDetails) o;
         return count == that.count &&
-                Objects.equals(pk, that.pk);
+                Objects.equals(pk, that.pk) &&
+                Objects.equals(order, that.order) &&
+                Objects.equals(book, that.book);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(pk, count);
+        return Objects.hash(pk, count, order, book);
     }
 
     public Order getOrder() {
-        return pk.getOrder();
+        return order;
     }
 
     public void setOrder(Order order) {
-        pk.setOrder(order);
+        this.order = order;
     }
 
     public Book getBook() {
-        return pk.getBook();
+        return book;
     }
 
     public void setBook(Book book) {
-        pk.setBook(book);
+        this.book = book;
     }
 }

@@ -64,13 +64,15 @@ public class OrderService {
         if (!orderRepository.existsById(id))
             throw new NotFoundException("Order with such id=" + id + " does not found!");
 
+//        Order order = orderRepository.getOne(id);
+
         Order order = orderRepository.findOneById(id);
         return orderMapper.toDTO(order);
     }
 
     @Transactional
     public OrderDTO create(OrderSaveDTO orderDTO, Integer userId) {
-        User user = userRepository.findOneById(userId);
+        User user = userRepository.getOne(userId);
         Collection<Cart> carts = user.getCarts();
 
         if (carts == null || carts.isEmpty())

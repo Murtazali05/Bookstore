@@ -136,7 +136,7 @@ public class User {
         return Objects.hash(id, surname, name, email, password, birthday, confirmation, confirmCode, registrationDate);
     }
 
-    @OneToMany(mappedBy = "pk.user")
+    @OneToMany(mappedBy = "user")
     public Collection<Cart> getCarts() {
         return carts;
     }

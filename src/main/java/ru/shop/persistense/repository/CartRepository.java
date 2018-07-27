@@ -15,10 +15,10 @@ import java.math.BigDecimal;
 public interface CartRepository extends JpaRepository<Cart, CartPK>, JpaSpecificationExecutor<Cart> {
 
     @Modifying
-    @Query("delete from Cart c where c.pk.user.id=:userId")
+    @Query("delete from Cart c where c.user.id=:userId")
     void deleteAllByUserId(@Param("userId") Integer userId);
 
-    @Query("select SUM(c.pk.book.price * c.count) from Cart c where c.pk.user.id=:userId")
+    @Query("select SUM(c.book.price * c.count) from Cart c where c.user.id=:userId")
     BigDecimal getTotalPrice(@Param("userId") Integer userId);
 
 }

@@ -1,40 +1,44 @@
 package ru.shop.persistense.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
 public class CartPK implements Serializable {
-    @ManyToOne
-    private User user;
 
-    @ManyToOne
-    private Book book;
+    @Column(name = "user_id", nullable = false)
+    private Integer userId;
+
+    @Column(name = "book_id", nullable = false)
+    private Integer bookId;
+
+    public CartPK(Integer userId, Integer bookId) {
+        this.userId = userId;
+        this.bookId = bookId;
+    }
 
     public CartPK() {
+
     }
 
-    public CartPK(Book book, User user) {
-        this.book = book;
-        this.user = user;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public User getUser() {
-        return user;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public Integer getBookId() {
+        return bookId;
     }
 
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
+    public void setBookId(Integer bookId) {
+        this.bookId = bookId;
     }
 
     @Override
@@ -42,13 +46,13 @@ public class CartPK implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CartPK cartPK = (CartPK) o;
-        return Objects.equals(user, cartPK.user) &&
-                Objects.equals(book, cartPK.book);
+        return Objects.equals(userId, cartPK.userId) &&
+                Objects.equals(bookId, cartPK.bookId);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(user, book);
+        return Objects.hash(userId, bookId);
     }
 }
