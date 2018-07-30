@@ -3,7 +3,6 @@ package ru.shop.persistense.entity;
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -18,10 +17,15 @@ public class User {
     private Boolean confirmation;
     private String confirmCode;
     private Timestamp registrationDate = new Timestamp(System.currentTimeMillis());
-    private Collection<Cart> carts;
-    private Collection<Order> orders;
     private Role role;
     private Photo photo;
+
+    public User() {
+    }
+
+    public User(int id) {
+        this.id = id;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -118,40 +122,13 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User that = (User) o;
-        return id == that.id &&
-                Objects.equals(surname, that.surname) &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(email, that.email) &&
-                Objects.equals(password, that.password) &&
-                Objects.equals(birthday, that.birthday) &&
-                Objects.equals(confirmation, that.confirmation) &&
-                Objects.equals(confirmCode, that.confirmCode) &&
-                Objects.equals(registrationDate, that.registrationDate);
+        User user = (User) o;
+        return id == user.id;
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(id, surname, name, email, password, birthday, confirmation, confirmCode, registrationDate);
-    }
-
-    @OneToMany(mappedBy = "pk.user")
-    public Collection<Cart> getCarts() {
-        return carts;
-    }
-
-    public void setCarts(Collection<Cart> carts) {
-        this.carts = carts;
-    }
-
-    @OneToMany(mappedBy = "user")
-    public Collection<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Collection<Order> orders) {
-        this.orders = orders;
+        return Objects.hash(id);
     }
 
     @ManyToOne
@@ -165,7 +142,7 @@ public class User {
     }
 
     @ManyToOne
-    @JoinColumn(name = "photo_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "photo_id", referencedColumnName = "id", nullable = true)
     public Photo getPhoto() {
         return photo;
     }

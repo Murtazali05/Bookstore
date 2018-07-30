@@ -10,15 +10,19 @@ import ru.shop.persistense.entity.Cart;
 import ru.shop.persistense.entity.CartPK;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Repository
 public interface CartRepository extends JpaRepository<Cart, CartPK>, JpaSpecificationExecutor<Cart> {
 
     @Modifying
-    @Query("delete from Cart c where c.pk.user.id=:userId")
+    @Query("DELETE from Cart c where c.pk.user.id=:userId")
     void deleteAllByUserId(@Param("userId") Integer userId);
 
-    @Query("select SUM(c.pk.book.price * c.count) from Cart c where c.pk.user.id=:userId")
+    @Query("SELECT SUM(c.pk.book.price * c.count) from Cart c where c.pk.user.id=:userId")
     BigDecimal getTotalPrice(@Param("userId") Integer userId);
+
+    @Query("SELECT DISTINCT c FROM Cart c WHERE c.pk.user.id = :id")
+    List<Cart> findAllByUserId(@Param("id") Integer id);
 
 }

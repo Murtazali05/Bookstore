@@ -107,7 +107,7 @@ public class Order {
         this.user = user;
     }
 
-    @OneToMany(mappedBy = "pk.order")
+    @OneToMany(mappedBy = "pk.order", cascade = CascadeType.ALL)
     public Collection<OrderDetails> getOrderDetails() {
         return orderDetails;
     }

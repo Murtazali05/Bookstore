@@ -15,5 +15,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     User findByConfirmCode(String token);
 
     User findOneById(Integer id);
-    
+
 }

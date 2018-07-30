@@ -67,8 +67,7 @@ public class CartService {
 
     @Transactional(readOnly = true)
     public CartDTO getCart(Integer userId) {
-        User user = userRepository.findOneById(userId);
-        Collection<Cart> carts = user.getCarts();
+        Collection<Cart> carts = cartRepository.findAllByUserId(userId);
 
         CartDTO cartDTO = new CartDTO();
         cartDTO.setUserId(userId);

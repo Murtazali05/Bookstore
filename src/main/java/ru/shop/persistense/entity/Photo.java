@@ -2,7 +2,6 @@ package ru.shop.persistense.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -13,9 +12,6 @@ public class Photo {
     private Integer size;
     private Timestamp uploadedDate = new Timestamp(System.currentTimeMillis());
     private String hashFile;
-    private Collection<Author> authors;
-    private Collection<Book> books;
-    private Collection<User> users;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -84,32 +80,5 @@ public class Photo {
     public int hashCode() {
 
         return Objects.hash(id, path, size, uploadedDate, hashFile);
-    }
-
-    @OneToMany(mappedBy = "photo")
-    public Collection<Author> getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors(Collection<Author> authors) {
-        this.authors = authors;
-    }
-
-    @OneToMany(mappedBy = "photo")
-    public Collection<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(Collection<Book> books) {
-        this.books = books;
-    }
-
-    @OneToMany(mappedBy = "photo")
-    public Collection<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Collection<User> users) {
-        this.users = users;
     }
 }

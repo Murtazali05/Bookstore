@@ -67,11 +67,12 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public UserDTO getUser(Integer id) throws NotFoundException {
-        if (!userRepository.existsById(id))
-            throw new NotFoundException("The user not found!");
-
-        return userMapper.toDTO(userRepository.getOne(id));
+    public UserDTO getUser(int id) throws NotFoundException {
+        return userMapper.toDTO(
+                userRepository
+                        .findById(id)
+                        .orElseThrow(() -> new NotFoundException("The user not found!"))
+        );
     }
 
     @Transactional(readOnly = true)
@@ -114,7 +115,7 @@ public class UserService {
         if (user == null)
             throw new IllegalArgumentException("Token is not valid!");
 
-        user.setConfirmCode("");
+//        user.setConfirmCode("");
         user.setConfirmation(true);
         userRepository.save(user);
 

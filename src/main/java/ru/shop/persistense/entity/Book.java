@@ -16,9 +16,7 @@ public class Book {
     private BigDecimal price;
     private Photo photo;
     private Date createdAt = new Date(System.currentTimeMillis());
-    private Collection<Cart> carts;
     private Collection<OrderDetails> orderDetails;
-
     private Collection<Author> authors;
     private Collection<Category> categories;
     private Collection<Genre> genres;
@@ -111,15 +109,6 @@ public class Book {
 
     public void setPhoto(Photo photo) {
         this.photo = photo;
-    }
-
-    @OneToMany(mappedBy = "pk.book")
-    public Collection<Cart> getCarts() {
-        return carts;
-    }
-
-    public void setCarts(Collection<Cart> carts) {
-        this.carts = carts;
     }
 
     @OneToMany(mappedBy = "pk.book")

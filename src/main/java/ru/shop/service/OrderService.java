@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.shop.persistense.entity.*;
-import ru.shop.persistense.repository.OrderDetailsRepository;
-import ru.shop.persistense.repository.OrderRepository;
-import ru.shop.persistense.repository.StatusRepository;
-import ru.shop.persistense.repository.UserRepository;
+import ru.shop.persistense.repository.*;
 import ru.shop.service.dto.order.OrderDTO;
 import ru.shop.service.dto.order.OrderSaveDTO;
 import ru.shop.service.mapper.order.OrderMapper;
@@ -17,6 +14,7 @@ import ru.shop.service.mapper.order.OrderSaveMapper;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -28,6 +26,7 @@ public class OrderService {
     private UserRepository userRepository;
     private StatusRepository statusRepository;
     private CartService cartService;
+    private CartRepository cartRepository;
 
     @Autowired
     public void setOrderRepository(OrderRepository orderRepository) {
@@ -64,6 +63,11 @@ public class OrderService {
         this.cartService = cartService;
     }
 
+    @Autowired
+    public void setCartRepository(CartRepository cartRepository) {
+        this.cartRepository = cartRepository;
+    }
+
     @Transactional(readOnly = true)
     public List<OrderDTO> getOrders(String status) {
         return orderMapper.toDTOs(orderRepository.findAllByStatus(status));
@@ -74,14 +78,14 @@ public class OrderService {
         if (!orderRepository.existsById(id))
             throw new NotFoundException("Order with such id=" + id + " does not found!");
 
-        Order order = orderRepository.findOneById(id);
-        return orderMapper.toDTO(order);
+        Optional<Order> order = orderRepository.findById(id);
+        return orderMapper.toDTO(order.orElse(null));
     }
 
     @Transactional
     public OrderDTO create(OrderSaveDTO orderDTO, Integer userId) {
         User user = userRepository.findOneById(userId);
-        Collection<Cart> carts = user.getCarts();
+        Collection<Cart> carts = cartRepository.findAllByUserId(userId);
 
         if (carts == null || carts.isEmpty())
             throw new IllegalStateException("Cart is empty!");
@@ -90,10 +94,10 @@ public class OrderService {
         order.setUser(user);
         order.setStatus(statusRepository.findByCode("PROCESSING"));
 
-        orderRepository.save(order);
         Collection<OrderDetails> orderDetailsCollection = new ArrayList<>();
         for (Cart cart: carts){
-            OrderDetails orderDetails = new OrderDetails(new OrderDetailsPK(order, cart.getPk().getBook()));
+            OrderDetailsPK pk = new OrderDetailsPK(order, cart.getPk().getBook());
+            OrderDetails orderDetails = new OrderDetails(pk);
             orderDetails.setCount(cart.getCount());
             orderDetailsCollection.add(orderDetails);
         }
@@ -118,6 +122,7 @@ public class OrderService {
     public OrderDTO delete(Integer id) {
         Order order = orderRepository.findOneById(id);
         orderRepository.deleteById(id);
+        orderDetailsRepository.deleteAllByOrderId(id);
         return orderMapper.toDTO(order);
     }
 }
