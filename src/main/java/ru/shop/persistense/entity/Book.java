@@ -113,7 +113,7 @@ public class Book {
         this.photo = photo;
     }
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "pk.book")
     public Collection<Cart> getCarts() {
         return carts;
     }
@@ -122,7 +122,7 @@ public class Book {
         this.carts = carts;
     }
 
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "pk.book")
     public Collection<OrderDetails> getOrderDetails() {
         return orderDetails;
     }

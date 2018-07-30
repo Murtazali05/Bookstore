@@ -9,6 +9,7 @@ import ru.shop.security.UserDetailsImpl;
 import ru.shop.service.OrderService;
 import ru.shop.service.dto.order.OrderDTO;
 import ru.shop.service.dto.order.OrderSaveDTO;
+import ru.shop.service.dto.order.StatusEnum;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -25,8 +26,8 @@ public class OrderController {
     }
 
     @GetMapping
-    public List<OrderDTO> getAll(){
-        return null;
+    public List<OrderDTO> getOrdersByStatus(StatusEnum status){
+        return orderService.getOrders(status.name());
     }
 
     @GetMapping("/{id}")
@@ -39,4 +40,13 @@ public class OrderController {
         return orderService.create(orderDTO, user.getId());
     }
 
+    @PutMapping("/{id}")
+    public OrderDTO setStatus(@PathVariable("id") Integer id, StatusEnum status) throws NotFoundException {
+        return orderService.setStatus(id, status.name());
+    }
+
+    @DeleteMapping("/{id}")
+    public OrderDTO delete(@PathVariable("id") Integer id){
+        return orderService.delete(id);
+    }
 }

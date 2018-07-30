@@ -11,14 +11,6 @@ public class Cart {
 
     private int count;
 
-    @ManyToOne
-    @MapsId("userId")
-    private User user;
-
-    @ManyToOne
-    @MapsId("bookId")
-    private Book book;
-
     public Cart() {
         pk = new CartPK();
     }
@@ -51,30 +43,12 @@ public class Cart {
         if (o == null || getClass() != o.getClass()) return false;
         Cart cart = (Cart) o;
         return count == cart.count &&
-                Objects.equals(pk, cart.pk) &&
-                Objects.equals(user, cart.user) &&
-                Objects.equals(book, cart.book);
+                Objects.equals(pk, cart.pk);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(pk, count, user, book);
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
+        return Objects.hash(pk, count);
     }
 }

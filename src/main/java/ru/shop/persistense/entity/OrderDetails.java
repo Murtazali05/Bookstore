@@ -11,16 +11,12 @@ public class OrderDetails {
 
     private int count;
 
-    @ManyToOne
-    @MapsId("orderId")
-    private Order order;
-
-    @ManyToOne
-    @MapsId("bookId")
-    private Book book;
-
     public OrderDetails() {
         this.pk = new OrderDetailsPK();
+    }
+
+    public OrderDetails(OrderDetailsPK pk) {
+        this.pk = pk;
     }
 
     public OrderDetailsPK getPk() {
@@ -47,30 +43,12 @@ public class OrderDetails {
         if (o == null || getClass() != o.getClass()) return false;
         OrderDetails that = (OrderDetails) o;
         return count == that.count &&
-                Objects.equals(pk, that.pk) &&
-                Objects.equals(order, that.order) &&
-                Objects.equals(book, that.book);
+                Objects.equals(pk, that.pk);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(pk, count, order, book);
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
+        return Objects.hash(pk, count);
     }
 }

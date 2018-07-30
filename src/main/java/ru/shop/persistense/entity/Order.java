@@ -107,7 +107,7 @@ public class Order {
         this.user = user;
     }
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "pk.order")
     public Collection<OrderDetails> getOrderDetails() {
         return orderDetails;
     }

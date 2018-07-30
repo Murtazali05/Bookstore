@@ -1,44 +1,41 @@
 package ru.shop.persistense.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
 public class CartPK implements Serializable {
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    @Column(name = "user_id", nullable = false)
-    private Integer userId;
-
-    @Column(name = "book_id", nullable = false)
-    private Integer bookId;
-
-    public CartPK(Integer userId, Integer bookId) {
-        this.userId = userId;
-        this.bookId = bookId;
-    }
+    @ManyToOne
+    @JoinColumn(name = "book_id", nullable = false)
+    private Book book;
 
     public CartPK() {
-
     }
 
-    public Integer getUserId() {
-        return userId;
+    public CartPK(User user, Book book) {
+        this.user = user;
+        this.book = book;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public User getUser() {
+        return user;
     }
 
-    public Integer getBookId() {
-        return bookId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public void setBookId(Integer bookId) {
-        this.bookId = bookId;
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     @Override
@@ -46,13 +43,13 @@ public class CartPK implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CartPK cartPK = (CartPK) o;
-        return Objects.equals(userId, cartPK.userId) &&
-                Objects.equals(bookId, cartPK.bookId);
+        return Objects.equals(user, cartPK.user) &&
+                Objects.equals(book, cartPK.book);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(userId, bookId);
+        return Objects.hash(user, book);
     }
 }

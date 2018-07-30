@@ -1,35 +1,41 @@
 package ru.shop.persistense.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
 public class OrderDetailsPK implements Serializable {
-    private int orderId;
-    private int bookId;
+    @ManyToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
 
-    @Id
-    @Column(name = "order_id", nullable = false)
-    public int getOrderId() {
-        return orderId;
+    @ManyToOne
+    @JoinColumn(name = "book_id", nullable = false)
+    private Book book;
+
+    public OrderDetailsPK() {
     }
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
+    public OrderDetailsPK(Order order, Book book) {
+        this.order = order;
+        this.book = book;
     }
 
-    @Id
-    @Column(name = "book_id", nullable = false)
-    public int getBookId() {
-        return bookId;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setBookId(int bookId) {
-        this.bookId = bookId;
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     @Override
@@ -37,13 +43,13 @@ public class OrderDetailsPK implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderDetailsPK that = (OrderDetailsPK) o;
-        return orderId == that.orderId &&
-                bookId == that.bookId;
+        return Objects.equals(order, that.order) &&
+                Objects.equals(book, that.book);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(orderId, bookId);
+        return Objects.hash(order, book);
     }
 }
