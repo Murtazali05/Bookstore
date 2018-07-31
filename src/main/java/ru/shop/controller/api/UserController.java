@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.shop.exception.UserNotConfirmationException;
 import ru.shop.service.UserService;
 import ru.shop.service.dto.TokenDTO;
 import ru.shop.service.dto.user.UserCreateDTO;

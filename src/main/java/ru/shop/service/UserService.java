@@ -6,6 +6,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.shop.exception.UserNotConfirmationException;
 import ru.shop.persistense.entity.User;
 import ru.shop.persistense.repository.RoleRepository;
 import ru.shop.persistense.repository.UserRepository;
@@ -81,6 +82,9 @@ public class UserService {
 
         if (!passwordEncoder.matches(userDTO.getPassword(), user.getPassword()))
             throw new BadCredentialsException("Invalid credentials. Wrong password!");
+
+        if (!user.getConfirmation())
+            throw new UserNotConfirmationException("User not confirmation! Go to the mail and confirm the account");
 
         TokenDTO tokenDTO = new TokenDTO();
         tokenDTO.setAccessToken(

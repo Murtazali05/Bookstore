@@ -24,21 +24,41 @@ import javax.servlet.http.HttpServletResponse;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final RequestMatcher SWAGGER_URLS = new OrRequestMatcher(
-            new AntPathRequestMatcher("/swagger-resources/**"),
-            new AntPathRequestMatcher("/configuration/**"),
-            new AntPathRequestMatcher("/webjars/**"),
-            new AntPathRequestMatcher("/swagger-ui.html"),
-            new AntPathRequestMatcher("/v2/api-docs")
+    private static final RequestMatcher PROTECTED_URLS = new OrRequestMatcher(
+            new AndRequestMatcher(
+                    new AntPathRequestMatcher("/api/**", "POST"),
+                    new NegatedRequestMatcher(new AntPathRequestMatcher("/api/users/**", "POST"))
+            ),
+            new AntPathRequestMatcher("/api/**", "PUT"),
+            new AntPathRequestMatcher("/api/**", "DELETE"),
+            new AntPathRequestMatcher("/api/cart/**"),
+            new AntPathRequestMatcher("/api/orders/**")
     );
 
-    private static final RequestMatcher PUBLIC_URLS = new OrRequestMatcher(
-            new AntPathRequestMatcher("/api/users/**")
+    private static final RequestMatcher SELLER_URLS = new OrRequestMatcher(
+            new AntPathRequestMatcher("/api/books/**", "POST"),
+            new AntPathRequestMatcher("/api/books/**", "PUT"),
+            new AntPathRequestMatcher("/api/books/**", "DELETE"),
+
+            new AntPathRequestMatcher("/api/orders/**", "PUT"),
+            new AntPathRequestMatcher("/api/order/**", "DELETE")
     );
 
-    private static final RequestMatcher PROTECTED_URLS = new AndRequestMatcher(
-            new NegatedRequestMatcher(SWAGGER_URLS),
-            new NegatedRequestMatcher(PUBLIC_URLS)
+    private static final RequestMatcher ADMIN_URLS = new OrRequestMatcher(
+            new AndRequestMatcher(
+                    new AntPathRequestMatcher("/api/**", "PUT"),
+                    new NegatedRequestMatcher(new AntPathRequestMatcher("/api/orders/**", "PUT"))
+            ),
+            new AndRequestMatcher(
+                    new AntPathRequestMatcher("/api/**", "DELETE"),
+                    new NegatedRequestMatcher(new AntPathRequestMatcher("/api/orders/**", "DELETE")),
+                    new NegatedRequestMatcher(new AntPathRequestMatcher("/api/photo/**", "DELETE"))
+            ),
+            new AndRequestMatcher(
+                    new AntPathRequestMatcher("/api/**", "POST"),
+                    new NegatedRequestMatcher(new AntPathRequestMatcher("/api/orders/**", "POST")),
+                    new NegatedRequestMatcher(new AntPathRequestMatcher("/api/photo/**", "POST"))
+            )
     );
 
     private TokenAuthenticationProvider provider;
@@ -71,9 +91,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(authenticationFilter(), AnonymousAuthenticationFilter.class)
 
                 .authorizeRequests()
-                .antMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/api/order").hasRole("SELLER")
+                .requestMatchers(ADMIN_URLS).hasRole("ADMIN")
+                .requestMatchers(SELLER_URLS).hasAnyRole("ADMIN", "SELLER")
                 .and()
 
                 .csrf().disable()
