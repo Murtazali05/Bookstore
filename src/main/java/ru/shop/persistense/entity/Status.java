@@ -10,7 +10,6 @@ public class Status {
     private int id;
     private String name;
     private String code;
-    private Collection<Order> orders;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,14 +56,5 @@ public class Status {
     public int hashCode() {
 
         return Objects.hash(id, name, code);
-    }
-
-    @OneToMany(mappedBy = "status")
-    public Collection<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Collection<Order> orders) {
-        this.orders = orders;
     }
 }

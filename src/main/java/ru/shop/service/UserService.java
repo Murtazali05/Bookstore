@@ -112,10 +112,9 @@ public class UserService {
     public TokenDTO confirm(String token) {
         User user = userRepository.findByConfirmCode(token);
 
-        if (user == null)
+        if (user == null || user.getConfirmation())
             throw new IllegalArgumentException("Token is not valid!");
 
-//        user.setConfirmCode("");
         user.setConfirmation(true);
         userRepository.save(user);
 

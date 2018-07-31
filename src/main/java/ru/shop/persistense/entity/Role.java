@@ -9,7 +9,6 @@ import java.util.Objects;
 public class Role {
     private int id;
     private String name;
-    private Collection<User> users;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,14 +44,5 @@ public class Role {
     public int hashCode() {
 
         return Objects.hash(id, name);
-    }
-
-    @OneToMany(mappedBy = "role")
-    public Collection<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Collection<User> users) {
-        this.users = users;
     }
 }
