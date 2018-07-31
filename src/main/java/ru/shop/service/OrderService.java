@@ -19,7 +19,6 @@ import java.util.Optional;
 @Service
 public class OrderService {
     private OrderRepository orderRepository;
-    private OrderDetailsRepository orderDetailsRepository;
     private OrderSaveMapper orderSaveMapper;
     private OrderMapper orderMapper;
 
@@ -31,11 +30,6 @@ public class OrderService {
     @Autowired
     public void setOrderRepository(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
-    }
-
-    @Autowired
-    public void setOrderDetailsRepository(OrderDetailsRepository orderDetailsRepository) {
-        this.orderDetailsRepository = orderDetailsRepository;
     }
 
     @Autowired
@@ -122,7 +116,6 @@ public class OrderService {
     public OrderDTO delete(Integer id) {
         Order order = orderRepository.findOneById(id);
         orderRepository.deleteById(id);
-        orderDetailsRepository.deleteAllByOrderId(id);
         return orderMapper.toDTO(order);
     }
 }

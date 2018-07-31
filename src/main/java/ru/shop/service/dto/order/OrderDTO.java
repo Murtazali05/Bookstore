@@ -1,7 +1,5 @@
 package ru.shop.service.dto.order;
 
-import ru.shop.service.dto.user.UserDTO;
-
 import java.util.List;
 
 public class OrderDTO {
@@ -10,7 +8,7 @@ public class OrderDTO {
     private String deliveryMethod;
     private String paymentMethod;
     private StatusDTO status;
-    private UserDTO user;
+    private Integer userId;
     private List<BookInOrderDTO> orderDetails;
 
     public Integer getId() {
@@ -53,12 +51,12 @@ public class OrderDTO {
         this.status = status;
     }
 
-    public UserDTO getUser() {
-        return user;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUser(UserDTO user) {
-        this.user = user;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public List<BookInOrderDTO> getOrderDetails() {
