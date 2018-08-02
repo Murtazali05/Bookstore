@@ -11,9 +11,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import ru.shop.core.exception.AlreadyExistsException;
-import ru.shop.core.service.dto.error.ErrorValidateDTO;
+import ru.shop.core.exception.OldPasswordIncorrectException;
 import ru.shop.core.service.dto.error.ErrorDTO;
+import ru.shop.core.service.dto.error.ErrorValidateDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,14 @@ public class GlobalExceptionHandler {
         logger.error("Server Error, name={}, message={}, id = {}", ex.getClass().getSimpleName(), ex.getMessage(), errId);
 
         return new ErrorDTO(ex.getClass().getSimpleName(), ex.getMessage() + ", error id = " + errId);
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorDTO handleNoHandlerFoundException(NoHandlerFoundException ex) {
+        logger.warn("404 error, name = {}, msg = {}", ex.getClass().getSimpleName(), ex.getMessage());
+
+        return new ErrorDTO(ex.getClass().getSimpleName(), ex.getMessage());
     }
 
     @ExceptionHandler(NotFoundException.class)
@@ -65,6 +75,18 @@ public class GlobalExceptionHandler {
     public ErrorDTO handleAlreadyExistsException(AlreadyExistsException ex) {
         logger.warn("409 exception, name = {}, msg = {}", ex.getClass().getSimpleName(), ex.getMessage());
 
+        return new ErrorDTO(ex.getClass().getSimpleName(), ex.getMessage());
+    }
+
+    @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDTO handleIllegalException(RuntimeException ex) {
+        return new ErrorDTO(ex.getClass().getSimpleName(), ex.getMessage());
+    }
+
+    @ExceptionHandler({OldPasswordIncorrectException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorDTO handleOldPasswordIncorrectException(RuntimeException ex) {
         return new ErrorDTO(ex.getClass().getSimpleName(), ex.getMessage());
     }
 
