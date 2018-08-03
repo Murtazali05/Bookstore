@@ -86,7 +86,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({OldPasswordIncorrectException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorDTO handleOldPasswordIncorrectException(RuntimeException ex) {
+    public ErrorDTO handleOldPasswordIncorrectException(OldPasswordIncorrectException ex) {
         return new ErrorDTO(ex.getClass().getSimpleName(), ex.getMessage());
     }
 

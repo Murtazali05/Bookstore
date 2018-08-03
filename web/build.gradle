@@ -19,6 +19,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     compile('org.springframework.boot:spring-boot-starter-validation')
     compile('org.springframework.boot:spring-boot-starter-web')
+    implementation('com.squareup.retrofit2:retrofit:2.4.0')
 
     runtime('org.springframework.boot:spring-boot-devtools')
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
