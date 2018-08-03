@@ -1,5 +1,7 @@
 .form-registration{
+    min-width: 300px;
     max-width: 480px;
+    margin: 0 auto;
 }
 
 .form-registration button{
