@@ -1,3 +1,6 @@
+@import "login.css";
+@import "registration.css";
+
 html, body{
     height: 100%;
     width: 100%
@@ -44,7 +47,7 @@ header .button-login{
     background-color: #dddddd;
 }
 
-.content{
+.main-content .content{
     background-color: #fafafa;
     margin-top: 30px;
     margin-bottom: 30px;
@@ -52,6 +55,10 @@ header .button-login{
     padding: 40px 60px 50px;
     min-height: 450px;
     height: 750px;
+}
+
+.main-content h3.head-content{
+    text-align: center;
 }
 
 footer{

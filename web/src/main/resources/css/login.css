@@ -1,0 +1,64 @@
+.form-login, .form-registration{
+    min-width: 300px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.main-content .form-login .link-login{
+    float: right;
+    margin-top: 7px;
+    margin-right: 2px;
+}
+
+.main-content .form-login .link-login a{
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+.main-content .form-login .link-login a:hover{
+    text-decoration: none;
+}
+
+.main-content .form-login a.link-forgot{
+    margin-left: 10px;
+}
+
+.main-content .form-login .auth-social-network {
+    border-top: 1px solid #cccccc;
+    margin-top: 30px;
+    padding: 20px 1px;
+    text-align: center;
+}
+
+.main-content .form-login .auth-social-network p {
+    display: inline-block;
+    margin-bottom: 0;
+    margin-right: 4px;
+}
+
+.main-content .form-login .auth-social-network p, .main-content .form-login .auth-social-network a{
+    vertical-align: middle;
+}
+
+.main-content .form-login .auth-social-network a{
+    display: inline-block;
+    font-size: 22px;
+    color: #4a76a8;
+    margin-left: 5px;
+}
+
+.main-content .form-login .auth-social-network a.vk{
+    color: #4a76a8;
+}
+
+.main-content .form-login .auth-social-network a.facebook{
+    color: #3b5998;
+}
+
+.main-content .form-login .auth-social-network a.instagram{
+    color: #666666;
+}
+
+.main-content .form-login .auth-social-network a.twitter{
+     color: #1da1f2;
+ }
