@@ -1,0 +1,60 @@
+
+.main-content .left-menu {
+    margin-top: 30px;
+    padding-bottom: 10px;
+    background-color: #FAFAFA;
+    color: #000;
+    text-align: center;
+}
+
+.main-content .left-menu p {
+    font-weight: bold;
+    font-size: 20px;
+    padding-top: 25px;
+    margin-bottom: 25px;
+}
+
+.main-content .left-menu hr{ padding: 0; margin: 0; }
+
+.main-content .left-menu .ava {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.main-content .left-menu .ava-img img {
+    width: 250px;
+    height: 250px;
+    border-radius: 100%;
+}
+
+.main-content .left-menu .ava a {
+    margin-top: 5px;
+    display: block;
+    text-decoration: underline;
+    color: #1a1a1a;
+    font-size: 14px;
+}
+
+.main-content .left-menu a.change-ava:hover {
+    text-decoration: none;
+}
+
+.main-content .left-menu .menu-person {
+    list-style-type: none;
+    text-align: left;
+    padding-left: 0;
+    margin-top: 25px;
+}
+
+
+.main-content .left-menu .menu-person li a {
+    padding: 15px 0 15px 35px;
+    display: block;
+    text-decoration: none;
+    color: #2a5885;
+}
+
+.main-content .left-menu .menu-person li a:hover, .left-menu .menu-person li a.active {
+    border-left: 3px solid #563d7c;
+    background-color: #eeeeee;
+}

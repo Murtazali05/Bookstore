@@ -1,7 +1,8 @@
 @import "login.css";
 @import "registration.css";
+@import "user.css";
 
-html, body{
+html, body {
     height: 100%;
     width: 100%
 }
@@ -11,57 +12,56 @@ body {
     flex-direction: column;
 }
 
-header{
+header {
     background-color: #24292e;
     min-height: 60px;
 }
 
-header h3{
+header h3 {
     font-size: 19px;
     font-family: 'Open Sans', sans-serif;
     margin-top: 19px;
 }
 
-header h3 a, header .button-login a{
+header h3 a, header .button-login a {
     color: #dddddd;
 }
 
 header h3 a:hover,
-header .button-login a:hover{
+header .button-login a:hover {
     color: #ffffff;
     text-decoration: none;
 }
 
-header h3 i.fa-home{
+header h3 i.fa-home {
     margin-right: 5px;
 }
 
-header .button-login{
+header .button-login {
     font-size: 21px;
     float: right;
     margin-top: 14px;
 }
 
-.main-content{
+.main-content {
     flex: 1 0 auto;
     background-color: #dddddd;
 }
 
-.main-content .content{
+.main-content .content {
     background-color: #fafafa;
     margin-top: 30px;
     margin-bottom: 30px;
 
     padding: 40px 60px 50px;
-    min-height: 450px;
-    height: 750px;
+    min-height: 500px;
 }
 
-.main-content h3.head-content{
+.main-content h3.head-content {
     text-align: center;
 }
 
-footer{
+footer {
     flex: 0 0 auto;
 
     background-color: #f0f0f0;
@@ -69,9 +69,9 @@ footer{
     min-height: 50px;
     font-family: 'Arial', 'Helectica', sans-serif;
     font-size: 14px;
-
 }
-footer p{
+
+footer p {
     margin-top: 15px;
     margin-bottom: 15px;
 }
