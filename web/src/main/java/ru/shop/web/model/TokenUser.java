@@ -1,11 +1,9 @@
-package ru.shop.core.service.dto;
+package ru.shop.web.model;
 
-import ru.shop.core.service.dto.user.UserDTO;
-
-public class TokenDTO {
+public class TokenUser {
     private String accessToken;
     private String tokenType;
-    private UserDTO user;
+    private User user;
 
     public String getAccessToken() {
         return accessToken;
@@ -23,11 +21,11 @@ public class TokenDTO {
         this.tokenType = tokenType;
     }
 
-    public UserDTO getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserDTO user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }

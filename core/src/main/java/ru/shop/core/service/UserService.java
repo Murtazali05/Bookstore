@@ -113,7 +113,7 @@ public class UserService {
                 )
         );
         tokenDTO.setTokenType(tokenUtil.getTokenPrefix());
-        tokenDTO.setUserDTO(userMapper.toDTO(user));
+        tokenDTO.setUser(userMapper.toDTO(user));
 
         return tokenDTO;
     }
@@ -152,7 +152,7 @@ public class UserService {
                 )
         );
         tokenDTO.setTokenType(tokenUtil.getTokenPrefix());
-        tokenDTO.setUserDTO(userMapper.toDTO(user));
+        tokenDTO.setUser(userMapper.toDTO(user));
 
         return tokenDTO;
     }
