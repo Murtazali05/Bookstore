@@ -1,4 +1,4 @@
-package ru.shop.web.model;
+package ru.shop.web.model.user;
 
 public class TokenUser {
     private String accessToken;

@@ -3,7 +3,7 @@ package ru.shop.web.service;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import ru.shop.web.model.TokenUser;
+import ru.shop.web.model.user.TokenUser;
 
 public interface UserService {
 

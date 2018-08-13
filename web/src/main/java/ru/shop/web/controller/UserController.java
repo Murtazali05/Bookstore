@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import retrofit2.Retrofit;
-import ru.shop.web.model.User;
+import ru.shop.web.model.user.User;
+import ru.shop.web.model.user.UserCreate;
 import ru.shop.web.service.UserService;
 
 import java.io.IOException;
@@ -46,5 +47,12 @@ public class UserController {
         map.addAttribute("user", user);
 
         return "user";
+    }
+
+    @GetMapping("/registration")
+    public String registration(ModelMap map) {
+        map.addAttribute("user", new UserCreate());
+        
+        return "registration";
     }
 }

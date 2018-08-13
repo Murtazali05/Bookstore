@@ -94,7 +94,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .requestMatchers(ADMIN_URLS).hasRole("ADMIN")
                 .requestMatchers(SELLER_URLS).hasAnyRole("ADMIN", "SELLER")
                 .and()
-
+                .cors()
+                .and()
                 .csrf().disable()
                 .formLogin().disable()
                 .httpBasic().disable()

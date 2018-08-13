@@ -1,6 +1,7 @@
 package ru.shop.core.controller.api;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,26 +23,31 @@ public class GenreController {
     }
 
     @GetMapping
+    @ApiOperation("Получить список всех жанров")
     public List<GenreDTO> getAll(){
         return genreService.getGenres();
     }
 
     @GetMapping("/{id}")
+    @ApiOperation("Получить жанр по ID")
     public GenreDTO get(@PathVariable("id") Integer id) throws NotFoundException {
         return genreService.getGenre(id);
     }
 
     @PostMapping
+    @ApiOperation("Создать новый жанр")
     public GenreDTO create(@Valid @RequestBody GenreDTO genreDTO){
         return genreService.create(genreDTO);
     }
 
     @PutMapping("/{id}")
+    @ApiOperation("Редактировать жанр")
     public GenreDTO update(@Valid @RequestBody GenreDTO genreDTO, @PathVariable("id") Integer id) throws NotFoundException {
         return genreService.update(id, genreDTO);
     }
 
     @DeleteMapping("/{id}")
+    @ApiOperation("Удалить жанр по ID")
     public GenreDTO delete(@PathVariable("id") Integer id) throws NotFoundException {
         return genreService.delete(id);
     }

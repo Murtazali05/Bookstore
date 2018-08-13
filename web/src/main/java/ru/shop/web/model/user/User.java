@@ -1,4 +1,7 @@
-package ru.shop.web.model;
+package ru.shop.web.model.user;
+
+import ru.shop.web.model.Photo;
+import ru.shop.web.model.Role;
 
 import java.sql.Date;
 import java.sql.Timestamp;

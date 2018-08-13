@@ -1,5 +1,6 @@
 package ru.shop.core.service.dto.author;
 
+import io.swagger.annotations.ApiModelProperty;
 import ru.shop.core.persistense.entity.Photo;
 import ru.shop.core.validator.annotation.ExistEntity;
 
