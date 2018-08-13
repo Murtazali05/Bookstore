@@ -1,10 +1,11 @@
 package ru.shop.core.service.dto;
 
 import org.springframework.data.domain.Page;
+import ru.shop.core.service.dto.filter.PageShortDTO;
 
 import java.util.List;
 
-public class PageDTO<T> extends PageShortDTO{
+public class PageDTO<T> extends PageShortDTO {
     private List<T> content;
     private Long totalElements;
     private Integer totalPages;

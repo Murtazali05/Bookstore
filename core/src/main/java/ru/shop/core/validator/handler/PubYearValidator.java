@@ -11,6 +11,8 @@ public class PubYearValidator implements ConstraintValidator<PubYear, Integer> {
     @Override
     public boolean isValid(Integer pubYear, ConstraintValidatorContext context) {
         Integer currentYear = Calendar.getInstance().get(Calendar.YEAR);
+
+        if (pubYear == null) return true;
         return pubYear > 0 && pubYear <= currentYear;
     }
 

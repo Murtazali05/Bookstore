@@ -1,4 +1,4 @@
-package ru.shop.core.service.dto;
+package ru.shop.core.service.dto.filter;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;

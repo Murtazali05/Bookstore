@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.shop.core.service.AuthorService;
 import ru.shop.core.service.dto.PageDTO;
-import ru.shop.core.service.dto.PageShortDTO;
+import ru.shop.core.service.dto.filter.PageShortDTO;
 import ru.shop.core.service.dto.author.AuthorDTO;
 
 import javax.validation.Valid;

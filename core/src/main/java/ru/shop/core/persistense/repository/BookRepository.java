@@ -3,13 +3,14 @@ package ru.shop.core.persistense.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.shop.core.persistense.entity.Book;
 
 @Repository
-public interface BookRepository extends JpaRepository<Book, Integer> {
+public interface BookRepository extends JpaRepository<Book, Integer>, JpaSpecificationExecutor<Book> {
 
     @Query("SELECT DISTINCT b FROM Book b INNER JOIN b.categories c WHERE c.code = :code")
     Page<Book> findAllByCategoryCode(@Param("code") String code, Pageable pageable);

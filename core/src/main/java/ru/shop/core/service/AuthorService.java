@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.shop.core.persistense.entity.Author;
 import ru.shop.core.persistense.repository.AuthorRepository;
 import ru.shop.core.service.dto.PageDTO;
-import ru.shop.core.service.dto.PageShortDTO;
+import ru.shop.core.service.dto.filter.PageShortDTO;
 import ru.shop.core.service.dto.author.AuthorDTO;
 import ru.shop.core.service.mapper.author.AuthorMapper;
 

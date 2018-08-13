@@ -11,9 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.shop.core.persistense.entity.Book;
 import ru.shop.core.persistense.repository.BookRepository;
 import ru.shop.core.service.dto.PageDTO;
-import ru.shop.core.service.dto.PageShortDTO;
 import ru.shop.core.service.dto.book.BookDTO;
 import ru.shop.core.service.dto.book.BookSaveDTO;
+import ru.shop.core.service.dto.filter.BookFilterDTO;
+import ru.shop.core.service.dto.filter.BookSpecification;
+import ru.shop.core.service.dto.filter.PageShortDTO;
 import ru.shop.core.service.mapper.book.BookMapper;
 import ru.shop.core.service.mapper.book.BookSaveMapper;
 
@@ -57,6 +59,13 @@ public class BookService {
     public PageDTO<BookDTO> getBooksByPage(PageShortDTO pageShortDTO) {
         Pageable pageable = PageRequest.of(pageShortDTO.getOffset(), pageShortDTO.getLimit(), Sort.Direction.ASC, "createdAt");
         Page<Book> booksPage = bookRepository.findAll(pageable);
+        return new PageDTO<>(booksPage, bookMapper.toDTOs(booksPage.getContent()));
+    }
+
+    @Transactional(readOnly = true)
+    public PageDTO<BookDTO> getBooksByFilter(BookFilterDTO bookFilterDTO) {
+        Pageable pageable = PageRequest.of(bookFilterDTO.getOffset(), bookFilterDTO.getLimit(), Sort.Direction.ASC, "createdAt");
+        Page<Book> booksPage = bookRepository.findAll(new BookSpecification(bookFilterDTO), pageable);
         return new PageDTO<>(booksPage, bookMapper.toDTOs(booksPage.getContent()));
     }
 

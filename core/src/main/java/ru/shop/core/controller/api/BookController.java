@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.shop.core.service.BookService;
 import ru.shop.core.service.dto.PageDTO;
-import ru.shop.core.service.dto.PageShortDTO;
+import ru.shop.core.service.dto.filter.BookFilterDTO;
+import ru.shop.core.service.dto.filter.PageShortDTO;
 import ru.shop.core.service.dto.book.BookDTO;
 import ru.shop.core.service.dto.book.BookSaveDTO;
 
@@ -26,8 +27,8 @@ public class BookController {
 
     @GetMapping
     @ApiOperation("Получить все книги")
-    public PageDTO<BookDTO> getAll(@Valid PageShortDTO page){
-        return bookService.getBooksByPage(page);
+    public PageDTO<BookDTO> getAll(@Valid BookFilterDTO filter) {
+        return bookService.getBooksByFilter(filter);
     }
 
     @GetMapping("/{id}")

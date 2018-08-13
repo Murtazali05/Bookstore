@@ -1,8 +1,11 @@
 package ru.shop.core.service.dto.book;
 
 import ru.shop.core.service.dto.PhotoDTO;
+import ru.shop.core.service.dto.author.AuthorDTO;
+import ru.shop.core.service.dto.genre.GenreDTO;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class BookDTO {
     private Integer id;
@@ -11,6 +14,8 @@ public class BookDTO {
     private Integer pubyear;
     private BigDecimal price;
     private PhotoDTO photo;
+    private List<AuthorDTO> authors;
+    private List<GenreDTO> genres;
 
     public Integer getId() {
         return id;
@@ -60,4 +65,19 @@ public class BookDTO {
         this.photo = photo;
     }
 
+    public List<AuthorDTO> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<AuthorDTO> authors) {
+        this.authors = authors;
+    }
+
+    public List<GenreDTO> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<GenreDTO> genres) {
+        this.genres = genres;
+    }
 }
