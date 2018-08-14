@@ -14,7 +14,7 @@ import ru.shop.core.service.dto.PageDTO;
 import ru.shop.core.service.dto.book.BookDTO;
 import ru.shop.core.service.dto.book.BookSaveDTO;
 import ru.shop.core.service.dto.filter.BookFilterDTO;
-import ru.shop.core.service.dto.filter.BookSpecification;
+import ru.shop.core.persistense.specification.BookSpecification;
 import ru.shop.core.service.dto.filter.PageShortDTO;
 import ru.shop.core.service.mapper.book.BookMapper;
 import ru.shop.core.service.mapper.book.BookSaveMapper;

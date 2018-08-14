@@ -5,10 +5,10 @@ import ru.shop.core.validator.annotation.PubYear;
 import javax.validation.constraints.Size;
 
 public class BookFilterDTO extends PageShortDTO {
-    @Size(max = 100)
+    @Size(max = 150)
     private String title;
 
-    @Size(max = 100)
+    @Size(max = 150)
     private String author;
 
     @PubYear

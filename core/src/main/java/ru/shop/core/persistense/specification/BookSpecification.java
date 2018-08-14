@@ -1,7 +1,8 @@
-package ru.shop.core.service.dto.filter;
+package ru.shop.core.persistense.specification;
 
 import org.springframework.data.jpa.domain.Specification;
 import ru.shop.core.persistense.entity.Book;
+import ru.shop.core.service.dto.filter.BookFilterDTO;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;

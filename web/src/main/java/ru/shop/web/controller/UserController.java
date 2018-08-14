@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import retrofit2.Retrofit;
+import ru.shop.web.model.user.TokenUser;
 import ru.shop.web.model.user.User;
 import ru.shop.web.model.user.UserCreate;
 import ru.shop.web.service.UserService;
@@ -32,12 +33,16 @@ public class UserController {
     }
 
     @GetMapping("/signIn")
-    public String signIn(@RequestParam("email") String email, @RequestParam("password") String password, ModelMap map) throws IOException {
+    public String signIn(@RequestParam("email") String email, @RequestParam("password") String password, ModelMap map) {
         UserService userService = retrofit.create(UserService.class);
-        User user = Objects.requireNonNull(userService.login(email, password).execute().body()).getUser();
+        TokenUser user;
+        try {
+            user = Objects.requireNonNull(userService.login(email, password).execute().body());
+            map.addAttribute("user", user);
 
-        assert user != null;
-        map.addAttribute("user", user);
+        } catch (IOException e) {
+            map.addAttribute(e.getMessage());
+        }
 
         return "redirect:/user";
     }
@@ -52,7 +57,7 @@ public class UserController {
     @GetMapping("/registration")
     public String registration(ModelMap map) {
         map.addAttribute("user", new UserCreate());
-        
+
         return "registration";
     }
 }

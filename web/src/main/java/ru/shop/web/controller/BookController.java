@@ -24,7 +24,7 @@ public class BookController {
     @GetMapping("/")
     public String index(ModelMap map) throws IOException {
         BookService bookService = retrofit.create(BookService.class);
-        List<Book> books = Objects.requireNonNull(bookService.getAll(0, 10).execute().body()).getContent();
+        List<Book> books = Objects.requireNonNull(bookService.getAll().execute().body()).getContent();
 
         map.addAttribute("books", books);
 

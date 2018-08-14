@@ -1,6 +1,5 @@
 package ru.shop.core.service.dto.author;
 
-import io.swagger.annotations.ApiModelProperty;
 import ru.shop.core.persistense.entity.Photo;
 import ru.shop.core.validator.annotation.ExistEntity;
 
@@ -16,7 +15,7 @@ public class AuthorDTO {
     private String fio;
 
     @NotBlank
-    @Size(min = 50, max = 1000)
+    @Size(min = 50, max = 5000)
     private String about;
 
     @NotNull

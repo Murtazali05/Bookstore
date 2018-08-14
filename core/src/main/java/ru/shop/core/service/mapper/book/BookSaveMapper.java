@@ -81,7 +81,7 @@ public class BookSaveMapper extends AbstractMapper<Book, BookSaveDTO> {
         book.setCategories(categories);
 
         Collection<Genre> genres = new ArrayList<>();
-        for (Integer genreId : bookDTO.getCategoriesID()) {
+        for (Integer genreId : bookDTO.getGenresID()) {
             genres.add(genreRepository.getOne(genreId));
         }
         book.setGenres(genres);
