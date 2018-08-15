@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import retrofit2.Retrofit;
-import ru.shop.web.model.Book;
+import ru.shop.web.model.book.Book;
 import ru.shop.web.service.BookService;
 
 import java.io.IOException;

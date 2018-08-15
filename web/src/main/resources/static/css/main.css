@@ -1,6 +1,7 @@
 @import "login.css";
 @import "registration.css";
 @import "user.css";
+@import "error.css";
 
 html, body {
     height: 100%;

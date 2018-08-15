@@ -1,4 +1,6 @@
-package ru.shop.web.model;
+package ru.shop.web.model.book;
+
+import ru.shop.web.model.Photo;
 
 import java.math.BigDecimal;
 

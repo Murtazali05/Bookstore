@@ -1,4 +1,4 @@
-package ru.shop.web.model;
+package ru.shop.web.model.book;
 
 import java.util.List;
 

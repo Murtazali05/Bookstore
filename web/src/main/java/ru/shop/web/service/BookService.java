@@ -2,7 +2,7 @@ package ru.shop.web.service;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
-import ru.shop.web.model.Books;
+import ru.shop.web.model.book.Books;
 
 public interface BookService {
 
