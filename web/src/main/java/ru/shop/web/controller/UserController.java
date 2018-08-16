@@ -3,61 +3,72 @@ package ru.shop.web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import ru.shop.web.config.JwtInterceptor;
 import ru.shop.web.model.user.TokenUser;
 import ru.shop.web.model.user.User;
 import ru.shop.web.model.user.UserCreate;
+import ru.shop.web.model.user.UserLogin;
 import ru.shop.web.service.UserService;
 
 import java.io.IOException;
-import java.util.Objects;
 
 @Controller
 public class UserController {
     private Retrofit retrofit;
-    private JwtInterceptor interceptor;
 
     @Autowired
     public void setRetrofit(Retrofit retrofit) {
         this.retrofit = retrofit;
     }
 
-    @Autowired
-    public void setInterceptor(JwtInterceptor interceptor) {
-        this.interceptor = interceptor;
-    }
-
     @GetMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error, ModelMap map){
         if (error != null)
-            map.addAttribute("error", "Ошибка! Неверный логин или пароль!");
+            map.addAttribute("error", error);
 
         return "login";
     }
 
-    @GetMapping("/signIn")
-    public ModelAndView signIn(@RequestParam("email") String email, @RequestParam("password") String password, ModelMap map) {
+    @PostMapping("/login")
+    public String login(@ModelAttribute UserLogin userLogin, ModelMap map) {
         UserService userService = retrofit.create(UserService.class);
-        TokenUser tokenUser;
+        String page;
+
         try {
-            tokenUser = Objects.requireNonNull(userService.login(email, password).execute().body());
-            interceptor.setToken(tokenUser.getAccessToken());
-            map.addAttribute("user", tokenUser.getUser());
+            Response<?> response = userService.login(userLogin).execute();
+            switch (response.code()) {
+                case 200:
+                    TokenUser tokenUser = (TokenUser) response.body();
+                    // Добавить tokenUser в sessionUtil
+                    page = "redirect:/user";
+                    break;
+                case 400:
+                    page = "redirect:/login?error=" + response.errorBody();
+                    break;
+                case 401:
+                    page = "redirect:/login?error=" + response.errorBody();
+                    break;
+                default:
+                    page = "redirect:/500";
+                    break;
+            }
         } catch (IOException e) {
-            map.addAttribute(e.getMessage());
+            return "/login?error=" + e.getMessage();
         }
 
-        return new ModelAndView("redirect:/user", map);
+        return page;
     }
 
     @GetMapping("/user")
-    public String user(RedirectAttributes attributes, ModelMap map){
-        map.addAttribute("user", attributes.getFlashAttributes());
+    public String user(ModelMap map){
+
+        map.addAttribute("user", new User());   // User from SessionUtil
         return "user";
     }
 
@@ -71,16 +82,30 @@ public class UserController {
     @PostMapping("/registration")
     public String registration(@ModelAttribute UserCreate userCreate, ModelMap map, RedirectAttributes attributes) {
         UserService userService = retrofit.create(UserService.class);
+        String page;
 
         try {
-            Response<User> userResponse = userService.registration(userCreate).execute();
-
+            Response<?> response = userService.registration(userCreate).execute();
+            switch (response.code()) {
+                case 200:
+                    page = "redirect:/confirmation";
+                    break;
+                case 400:
+                    page = "redirect:/registration?error=" + response.errorBody();
+                    break;
+                case 401:
+                    page = "redirect:/registration?error=" + response.errorBody();
+                    break;
+                default:
+                    page = "redirect:/500";
+                    break;
+            }
         } catch (IOException e) {
             map.addAttribute("error", e.getMessage());
             return "registration";
         }
 
-        return "redirect:/confirmation";
+        return page;
     }
 
     @GetMapping("/confirmation")

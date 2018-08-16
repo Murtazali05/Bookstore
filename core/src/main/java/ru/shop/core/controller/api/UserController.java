@@ -42,6 +42,12 @@ public class UserController {
         return userService.get(id);
     }
 
+    @GetMapping("/current")
+    @ApiOperation("Получить текущего пользователя")
+    public UserDTO getCurrent(@AuthenticationPrincipal UserDetailsImpl userDetails) throws NotFoundException {
+        return userService.get(userDetails.getId());
+    }
+
     @PostMapping
     @ApiOperation("Регистрация пользователя")
     public UserDTO registration(@Valid @RequestBody UserCreateDTO userDTO, HttpServletRequest request){
@@ -54,9 +60,9 @@ public class UserController {
         return userService.confirm(token);
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     @ApiOperation("Авторизация пользователя")
-    public TokenDTO login(@Valid UserLoginDTO userLoginDTO) {
+    public TokenDTO login(@Valid @RequestBody UserLoginDTO userLoginDTO) {
         return userService.login(userLoginDTO);
     }
 

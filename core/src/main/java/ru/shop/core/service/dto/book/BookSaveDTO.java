@@ -33,18 +33,12 @@ public class BookSaveDTO {
     @ExistEntity(entityClass = Photo.class)
     private Integer photoId;
 
-    @NotNull
-    @NotEmpty
     @ExistEntity(entityClass = Author.class)
     private List<Integer> authorsID;
 
-    @NotNull
-    @NotEmpty
     @ExistEntity(entityClass = Category.class)
     private List<Integer> categoriesID;
 
-    @NotNull
-    @NotEmpty
     @ExistEntity(entityClass = Genre.class)
     private List<Integer> genresID;
 

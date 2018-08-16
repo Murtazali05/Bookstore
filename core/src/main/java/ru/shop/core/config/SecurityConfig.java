@@ -28,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     new AntPathRequestMatcher("/api/**", "POST"),
                     new NegatedRequestMatcher(new AntPathRequestMatcher("/api/users/**", "POST"))
             ),
+            new AntPathRequestMatcher("/api/users/current", "GET"),
             new AntPathRequestMatcher("/api/**", "PUT"),
             new AntPathRequestMatcher("/api/**", "DELETE"),
             new AntPathRequestMatcher("/api/cart/**"),

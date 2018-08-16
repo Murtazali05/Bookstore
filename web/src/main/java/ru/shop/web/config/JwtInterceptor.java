@@ -9,31 +9,15 @@ import java.io.IOException;
 
 @Component
 public class JwtInterceptor implements Interceptor {
-    private String token;
-
-    public void setToken(String token) {
-        this.token = "Bearer " + token;
-    }
-
-    private String getToken(){
-        return token;
-    }
-
-    private Boolean isUserLoggedIn() {
-        return token != null;
-    }
 
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request.Builder ongoing = chain.request().newBuilder();
+//        session().setAttribute("user", user);
         ongoing.addHeader("Accept", "application/json;versions=1");
-        if (isUserLoggedIn()){
-            ongoing.addHeader("Authorization", getToken());
-        }
+//        if (isUserLoggedIn()){
+//            ongoing.addHeader("Authorization", SessionUtil.getSession().getAttribute("token"));
+//        }
         return chain.proceed(ongoing.build());
-    }
-
-    public void deleteToken(){
-        token = null;
     }
 }
