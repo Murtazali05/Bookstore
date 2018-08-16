@@ -33,8 +33,12 @@ public class BookSpecification implements Specification<Book> {
             predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.join("authors").get("fio")), "%" + bookFilterDTO.getAuthor().trim().toLowerCase() + "%"));
         }
 
-        if (bookFilterDTO.getGenre() != null && !bookFilterDTO.getGenre().isEmpty()){
-            predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.join("genres").get("name")), "%" + bookFilterDTO.getGenre().trim().toLowerCase() + "%"));
+        if (bookFilterDTO.getGenres() != null) {
+            Predicate predicate = query
+                    .where(root.join("genres").get("id").in(bookFilterDTO.getGenres()))
+                    .distinct(true)
+                    .getRestriction();
+            predicates.add(predicate);
         }
 
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

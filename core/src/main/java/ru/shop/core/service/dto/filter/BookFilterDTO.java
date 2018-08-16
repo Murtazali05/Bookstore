@@ -3,6 +3,7 @@ package ru.shop.core.service.dto.filter;
 import ru.shop.core.validator.annotation.PubYear;
 
 import javax.validation.constraints.Size;
+import java.util.List;
 
 public class BookFilterDTO extends PageShortDTO {
     @Size(max = 150)
@@ -14,8 +15,7 @@ public class BookFilterDTO extends PageShortDTO {
     @PubYear
     private Integer pubyear;
 
-    @Size(max = 150)
-    private String genre;
+    private List<Integer> genres;
 
     public String getTitle() {
         return title;
@@ -41,11 +41,11 @@ public class BookFilterDTO extends PageShortDTO {
         this.pubyear = pubyear;
     }
 
-    public String getGenre() {
-        return genre;
+    public List<Integer> getGenres() {
+        return genres;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
+    public void setGenres(List<Integer> genres) {
+        this.genres = genres;
     }
 }
