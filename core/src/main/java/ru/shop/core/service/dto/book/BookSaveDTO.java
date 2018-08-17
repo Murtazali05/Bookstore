@@ -17,7 +17,7 @@ public class BookSaveDTO {
     private String title;
 
     @NotBlank
-    @Size(min = 50, max = 5000)
+    @Size
     private String description;
 
     @NotNull

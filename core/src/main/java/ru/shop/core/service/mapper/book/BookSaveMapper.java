@@ -68,24 +68,29 @@ public class BookSaveMapper extends AbstractMapper<Book, BookSaveDTO> {
         book.setPubyear(bookDTO.getPubyear());
         book.setPhoto(photoRepository.getOne(bookDTO.getPhotoId()));
 
-        Collection<Author> authors = new ArrayList<>();
-        for (Integer authorId : bookDTO.getAuthorsID()) {
-            authors.add(authorRepository.getOne(authorId));
+        if (bookDTO.getAuthorsID() != null && !bookDTO.getAuthorsID().isEmpty()) {
+            Collection<Author> authors = new ArrayList<>();
+            for (Integer authorId : bookDTO.getAuthorsID()) {
+                authors.add(authorRepository.getOne(authorId));
+            }
+            book.setAuthors(authors);
         }
-        book.setAuthors(authors);
 
-        Collection<Category> categories = new ArrayList<>();
-        for (Integer categoryId : bookDTO.getCategoriesID()) {
-            categories.add(categoryRepository.getOne(categoryId));
+        if (bookDTO.getCategoriesID() != null && !bookDTO.getCategoriesID().isEmpty()) {
+            Collection<Category> categories = new ArrayList<>();
+            for (Integer categoryId : bookDTO.getCategoriesID()) {
+                categories.add(categoryRepository.getOne(categoryId));
+            }
+            book.setCategories(categories);
         }
-        book.setCategories(categories);
 
-        Collection<Genre> genres = new ArrayList<>();
-        for (Integer genreId : bookDTO.getGenresID()) {
-            genres.add(genreRepository.getOne(genreId));
+        if (bookDTO.getGenresID() != null && !bookDTO.getGenresID().isEmpty()) {
+            Collection<Genre> genres = new ArrayList<>();
+            for (Integer genreId : bookDTO.getGenresID()) {
+                genres.add(genreRepository.getOne(genreId));
+            }
+            book.setGenres(genres);
         }
-        book.setGenres(genres);
-
         return book;
     }
 
