@@ -51,6 +51,9 @@ public class UserController {
 
     @GetMapping("/login")
     public ModelAndView login(@RequestParam(value = "error", required = false) String error, ModelMap map) {
+        if (authSession.isUserLogged())
+            return new ModelAndView("redirect:/user");
+
         if (error != null)
             map.addAttribute("error", messages.get(error));
 
@@ -98,7 +101,10 @@ public class UserController {
 
     @GetMapping("/registration")
     public ModelAndView registration(ModelMap map) {
-        map.addAttribute("user", new UserCreate());
+        if (authSession.isUserLogged())
+            return new ModelAndView("redirect:/user");
+
+        map.addAttribute("userCreate", new UserCreate());
 
         return new ModelAndView("registration", map);
     }
@@ -113,7 +119,7 @@ public class UserController {
         if (response.isSuccessful()) {
             view = "redirect:/confirmation";
         } else {
-            map.addAttribute("user", userCreate);
+            map.addAttribute("userCreate", userCreate);
             view = "registration";
             switch (response.code()) {
                 case 400:
@@ -137,7 +143,7 @@ public class UserController {
         return new ModelAndView("confirmation");
     }
 
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public ModelAndView logout(){
         authSession.deleteFromSession();
         return new ModelAndView("redirect:/");
