@@ -47,7 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final RequestMatcher ADMIN_URLS = new OrRequestMatcher(
             new AndRequestMatcher(
                     new AntPathRequestMatcher("/api/**", "PUT"),
-                    new NegatedRequestMatcher(new AntPathRequestMatcher("/api/orders/**", "PUT"))
+                    new NegatedRequestMatcher(new AntPathRequestMatcher("/api/orders/**", "PUT")),
+                    new NegatedRequestMatcher(new AntPathRequestMatcher("/api/users", "PUT"))
             ),
             new AndRequestMatcher(
                     new AntPathRequestMatcher("/api/**", "DELETE"),

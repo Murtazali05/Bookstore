@@ -40,7 +40,7 @@ public class MessageConfig implements MessageContainer {
         try {
             return accessor.getMessage(msg);
         } catch (NoSuchMessageException e) {
-            return '{' + msg + '}';
+            return msg;
         }
     }
 

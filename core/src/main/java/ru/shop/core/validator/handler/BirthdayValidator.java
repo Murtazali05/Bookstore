@@ -10,6 +10,8 @@ public class BirthdayValidator implements ConstraintValidator<Birthday, Object> 
 
     @Override
     public boolean isValid(Object birthday, ConstraintValidatorContext context) {
+        if (birthday == null) return true;
+
         if (birthday instanceof Date)
             return (((Date) birthday).getTime() > 0 && ((Date) birthday).getTime() < System.currentTimeMillis());
 

@@ -21,12 +21,25 @@ public class UserUpdateMapper extends AbstractMapper<User, UserUpdateDTO> {
     }
 
     public User toEntity(User user, UserUpdateDTO userUpdateDTO) {
-        user.setSurname(userUpdateDTO.getSurname());
-        user.setName(userUpdateDTO.getName());
-        user.setEmail(userUpdateDTO.getEmail());
-        user.setPassword(userUpdateDTO.getNewPassword());
-        user.setBirthday(userUpdateDTO.getBirthday());
-        user.setPhoto(photoRepository.getOne(userUpdateDTO.getPhotoId()));
+        if (userUpdateDTO.getSurname() != null && !userUpdateDTO.getSurname().isEmpty()) {
+            user.setSurname(userUpdateDTO.getSurname());
+        }
+        if (userUpdateDTO.getName() != null && !userUpdateDTO.getName().isEmpty()) {
+            user.setName(userUpdateDTO.getName());
+        }
+        if (userUpdateDTO.getEmail() != null && !userUpdateDTO.getEmail().isEmpty()) {
+            user.setEmail(userUpdateDTO.getEmail());
+        }
+        if (userUpdateDTO.getNewPassword() != null && !userUpdateDTO.getNewPassword().isEmpty()) {
+            user.setPassword(userUpdateDTO.getNewPassword());
+        }
+        if (userUpdateDTO.getBirthday() != null) {
+            user.setBirthday(userUpdateDTO.getBirthday());
+        }
+        if (userUpdateDTO.getPhotoId() != null) {
+            user.setPhoto(photoRepository.getOne(userUpdateDTO.getPhotoId()));
+        }
+
         return user;
     }
 }

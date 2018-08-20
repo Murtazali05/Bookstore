@@ -1,20 +1,20 @@
 package ru.shop.core.service.dto.error;
 
 public class ErrorDTO {
-    private String name;
+    private String exception;
     private String message;
 
-    public ErrorDTO(String name, String message) {
-        this.name = name;
+    public ErrorDTO(String exception, String message) {
+        this.exception = exception;
         this.message = message;
     }
 
-    public String getName() {
-        return name;
+    public String getException() {
+        return exception;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setException(String exception) {
+        this.exception = exception;
     }
 
     public String getMessage() {
@@ -24,5 +24,4 @@ public class ErrorDTO {
     public void setMessage(String message) {
         this.message = message;
     }
-
 }

@@ -10,15 +10,12 @@ import javax.validation.constraints.Size;
 import java.sql.Date;
 
 public class UserUpdateDTO {
-    @NotBlank
     @Size(min = 3, max = 45)
     private String surname;
 
-    @NotBlank
     @Size(min = 3, max = 45)
     private String name;
 
-    @NotBlank
     @Email
     private String email;
 
@@ -26,7 +23,6 @@ public class UserUpdateDTO {
     @Size(min = 3, max = 30)
     private String oldPassword;
 
-    @NotBlank
     @Size(min = 3, max = 30)
     private String newPassword;
 

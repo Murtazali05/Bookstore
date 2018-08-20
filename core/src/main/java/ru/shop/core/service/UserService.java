@@ -164,11 +164,13 @@ public class UserService {
         if (!passwordEncoder.matches(userUpdateDTO.getOldPassword(), user.getPassword())){
             throw new OldPasswordIncorrectException("Old password is incorrect!");
         }
-        userUpdateDTO.setNewPassword(passwordEncoder.encode(userUpdateDTO.getNewPassword()));
 
+        if (userUpdateDTO.getNewPassword() != null) {
+            userUpdateDTO.setNewPassword(passwordEncoder.encode(userUpdateDTO.getNewPassword()));
+        }
         user = userUpdateMapper.toEntity(user, userUpdateDTO);
 
-        if (!userUpdateDTO.getEmail().equals(user.getEmail())){
+        if (userUpdateDTO.getEmail() != null && !userUpdateDTO.getEmail().isEmpty() && !userUpdateDTO.getEmail().equals(user.getEmail())){
             user.setConfirmation(false);
             UUID uuid = UUID.randomUUID();
             user.setConfirmCode(uuid.toString());

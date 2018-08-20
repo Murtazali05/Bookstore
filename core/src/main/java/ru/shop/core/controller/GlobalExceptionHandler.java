@@ -15,10 +15,10 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import ru.shop.core.exception.AlreadyExistsException;
 import ru.shop.core.exception.OldPasswordIncorrectException;
 import ru.shop.core.service.dto.error.ErrorDTO;
-import ru.shop.core.service.dto.error.ErrorValidateDTO;
+import ru.shop.core.service.dto.error.ErrorMapDTO;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @RestControllerAdvice
@@ -52,14 +52,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({BindException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public List<ErrorValidateDTO> handleBindException(BindException ex) {
-        return this.handleBindingResult(ex.getClass().getSimpleName(), ex.getBindingResult());
+    public ErrorMapDTO handleBindException(BindException ex) {
+        return handleBindingResult(ex.getClass().getSimpleName(), "handle.BindException.validation.message", ex.getBindingResult());
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public List<ErrorValidateDTO> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        return handleBindingResult(ex.getClass().getSimpleName(), ex.getBindingResult());
+    public ErrorMapDTO handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        return handleBindingResult(ex.getClass().getSimpleName(), "handle.MethodArgumentNotValidException.validation.message", ex.getBindingResult());
     }
 
     @ExceptionHandler({BadCredentialsException.class})
@@ -90,12 +90,13 @@ public class GlobalExceptionHandler {
         return new ErrorDTO(ex.getClass().getSimpleName(), ex.getMessage());
     }
 
-    private List<ErrorValidateDTO> handleBindingResult(String name, BindingResult bindingResult) {
-        List<ErrorValidateDTO> errorDTOList = new ArrayList<>();
-        for (int i = 0; i < bindingResult.getAllErrors().size(); i++) {
-            errorDTOList.add(new ErrorValidateDTO(name, bindingResult.getAllErrors().get(i).getDefaultMessage(), bindingResult.getFieldErrors().get(i).getField(), bindingResult.getAllErrors().get(i).getCode()));
-        }
-        return errorDTOList;
-    }
+    private ErrorMapDTO handleBindingResult(String exception, String message, BindingResult bindingResult) {
+        Map<String, String> errors = new HashMap<>(bindingResult.getAllErrors().size());
 
+        for (int i = 0; i < bindingResult.getAllErrors().size(); i++) {
+            errors.put(bindingResult.getFieldErrors().get(i).getField(), bindingResult.getAllErrors().get(i).getDefaultMessage());
+        }
+
+        return new ErrorMapDTO(exception, message, errors);
+    }
 }

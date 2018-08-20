@@ -12,10 +12,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import ru.shop.web.config.AuthSessionUtil;
 import ru.shop.web.config.messages.MessageContainer;
+import ru.shop.web.model.error.ErrorMap;
 import ru.shop.web.model.user.TokenUser;
 import ru.shop.web.model.user.UserCreate;
 import ru.shop.web.model.user.UserLogin;
 import ru.shop.web.service.UserService;
+import ru.shop.web.util.ErrorUtil;
 
 import java.io.IOException;
 
@@ -24,6 +26,7 @@ public class UserController {
     private Retrofit retrofit;
     private AuthSessionUtil authSession;
     private MessageContainer messages;
+    private ErrorUtil errorUtil;
 
     @Autowired
     public void setRetrofit(Retrofit retrofit) {
@@ -38,6 +41,11 @@ public class UserController {
     @Autowired
     public void setMessages(MessageContainer messages) {
         this.messages = messages;
+    }
+
+    @Autowired
+    public void setErrorUtil(ErrorUtil errorUtil) {
+        this.errorUtil = errorUtil;
     }
 
     @GetMapping("/login")
@@ -55,21 +63,27 @@ public class UserController {
 
         try {
             Response<?> response = userService.login(userLogin).execute();
-            switch (response.code()) {
-                case 200:
-                    TokenUser tokenUser = (TokenUser) response.body();
-                    authSession.setSession(tokenUser);
-                    page = "redirect:/user";
-                    break;
-                case 400:
-                    page = "redirect:/login?error=" + response.errorBody();
-                    break;
-                case 401:
-                    page = "redirect:/login?error=" + response.errorBody();
-                    break;
-                default:
-                    page = "redirect:/500";
-                    break;
+
+            if (response.isSuccessful()) {
+                TokenUser tokenUser = (TokenUser) response.body();
+                authSession.setSession(tokenUser);
+                page = "redirect:/user";
+            } else {
+                switch (response.code()) {
+                    case 400:
+                        ErrorMap error = errorUtil.parseErrorMap(response);
+                        page = "redirect:/login?error=" + error.getMessage();
+                        break;
+                    case 401:
+                        page = "redirect:/login?error=" + errorUtil.parseError(response).getMessage();
+                        break;
+                    case 500:
+                        page = "redirect:/login?error=" + errorUtil.parseError(response).getMessage();
+                        break;
+                    default:
+                        page = "redirect:/error/500";
+                        break;
+                }
             }
         } catch (IOException e) {
             return "/login?error=" + e.getMessage();
