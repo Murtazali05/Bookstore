@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.ModelAndView;
 import retrofit2.Retrofit;
 import ru.shop.web.model.book.Book;
 import ru.shop.web.service.BookService;
@@ -22,12 +23,12 @@ public class BookController {
     }
 
     @GetMapping("/")
-    public String index(ModelMap map) throws IOException {
+    public ModelAndView index(ModelMap map) throws IOException {
         BookService bookService = retrofit.create(BookService.class);
         List<Book> books = Objects.requireNonNull(bookService.getAll().execute().body()).getContent();
 
         map.addAttribute("books", books);
 
-        return "index";
+        return new ModelAndView("index");
     }
 }

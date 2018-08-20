@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.ModelAndView;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import ru.shop.web.config.AuthSessionUtil;
@@ -20,6 +20,7 @@ import ru.shop.web.service.UserService;
 import ru.shop.web.util.ErrorUtil;
 
 import java.io.IOException;
+import java.util.Map;
 
 @Controller
 public class UserController {
@@ -49,100 +50,107 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String login(@RequestParam(value = "error", required = false) String error, ModelMap map) {
+    public ModelAndView login(@RequestParam(value = "error", required = false) String error, ModelMap map) {
         if (error != null)
             map.addAttribute("error", messages.get(error));
 
-        return "login";
+        return new ModelAndView("login", map);
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute UserLogin userLogin, ModelMap map) {
+    public ModelAndView login(@ModelAttribute UserLogin userLogin, ModelMap map) throws IOException {
         UserService userService = retrofit.create(UserService.class);
-        String page;
+        String view;
 
-        try {
-            Response<?> response = userService.login(userLogin).execute();
+        Response<?> response = userService.login(userLogin).execute();
 
-            if (response.isSuccessful()) {
-                TokenUser tokenUser = (TokenUser) response.body();
-                authSession.setSession(tokenUser);
-                page = "redirect:/user";
-            } else {
-                switch (response.code()) {
-                    case 400:
-                        ErrorMap error = errorUtil.parseErrorMap(response);
-                        page = "redirect:/login?error=" + error.getMessage();
-                        break;
-                    case 401:
-                        page = "redirect:/login?error=" + errorUtil.parseError(response).getMessage();
-                        break;
-                    case 500:
-                        page = "redirect:/login?error=" + errorUtil.parseError(response).getMessage();
-                        break;
-                    default:
-                        page = "redirect:/error/500";
-                        break;
-                }
+        if (response.isSuccessful()) {
+            TokenUser tokenUser = (TokenUser) response.body();
+            authSession.setSession(tokenUser);
+            view = "redirect:/user";
+        } else {
+            view = "login";
+            switch (response.code()) {
+                case 400:
+                    map.addAttribute("error", getErrorMsg(errorUtil.parseErrorMap(response)));
+                    break;
+                case 401:
+                    map.addAttribute("error", errorUtil.parseError(response).getMessage());
+                    break;
+                default:
+                    map.addAttribute("error", errorUtil.parseError(response).getMessage());
+                    break;
             }
-        } catch (IOException e) {
-            return "/login?error=" + e.getMessage();
         }
 
-        return page;
+        return new ModelAndView(view, map);
     }
 
     @GetMapping("/user")
-    public String user(ModelMap map) {
+    public ModelAndView user(ModelMap map) {
         if (authSession.isUserLogged()) {
             map.addAttribute("user", authSession.getCurrentUser());
-            return "user";
+            return new ModelAndView("user", map);
         } else {
-            return "redirect:/login?error=forbidden.page.unauthorized.message";
+            return new ModelAndView("redirect:/login?error=forbidden.page.unauthorized.message");
         }
     }
 
     @GetMapping("/registration")
-    public String registration(@RequestParam(value = "error", required = false) String error, ModelMap map) {
-        if (error != null)
-            map.addAttribute("error", error);
-
+    public ModelAndView registration(ModelMap map) {
         map.addAttribute("user", new UserCreate());
 
-        return "registration";
+        return new ModelAndView("registration", map);
     }
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute UserCreate userCreate, ModelMap map, RedirectAttributes attributes) {
+    public ModelAndView registration(@ModelAttribute UserCreate userCreate, ModelMap map) throws IOException {
         UserService userService = retrofit.create(UserService.class);
-        String page;
+        String view;
 
-        try {
-            Response<?> response = userService.registration(userCreate).execute();
+        Response<?> response = userService.registration(userCreate).execute();
+
+        if (response.isSuccessful()) {
+            view = "redirect:/confirmation";
+        } else {
+            map.addAttribute("user", userCreate);
+            view = "registration";
             switch (response.code()) {
-                case 200:
-                    page = "redirect:/confirmation";
-                    break;
                 case 400:
-                    page = "redirect:/registration?error=" + response.errorBody();
+                    ErrorMap errorMap = errorUtil.parseErrorMap(response);
+                    map.addAttribute("error", getErrorMsg(errorMap));
                     break;
                 case 401:
-                    page = "redirect:/registration?error=" + response.errorBody();
+                    map.addAttribute("error", errorUtil.parseError(response).getMessage());
                     break;
                 default:
-                    page = "redirect:/500";
+                    map.addAttribute("error", errorUtil.parseError(response).getMessage());
                     break;
             }
-        } catch (IOException e) {
-            map.addAttribute("error", e.getMessage());
-            return "registration";
         }
 
-        return page;
+        return new ModelAndView(view, map);
     }
 
     @GetMapping("/confirmation")
-    public String confirmation() {
-        return "confirmation";
+    public ModelAndView confirmation() {
+        return new ModelAndView("confirmation");
+    }
+
+    @PostMapping("/logout")
+    public ModelAndView logout(){
+        authSession.deleteFromSession();
+        return new ModelAndView("redirect:/");
+    }
+
+    private String getErrorMsg(ErrorMap errorMap) {
+        Map<String, String> errors = errorMap.getErrors();
+        String error = errorMap.getMessage();
+
+        for (String key : errors.keySet()){
+            String msg = errors.get(key).replace("{", "").replace("}", "");
+            error = "Error: " + messages.getAndFormat(msg, key) + ", field: " + key;
+        }
+        return error;
     }
 }
