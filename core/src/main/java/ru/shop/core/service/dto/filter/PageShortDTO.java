@@ -4,6 +4,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
 public class PageShortDTO {
+    @Min(0)
     @Max(497)
     private Integer offset = 0;
 

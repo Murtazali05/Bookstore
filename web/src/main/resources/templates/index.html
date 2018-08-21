@@ -9,14 +9,39 @@
 
 <section class="main-content">
     <div class="container">
-        <div class="row">
+        <div class="row row-flex">
             <div class="col-md-12">
                 <div class="content">
-                    <h3>Books:</h3>
+                    <div th:if="${error != null}" class="error" th:text="${error}"></div>
 
-                    <ul th:each="book : ${books}">
-                        <li th:text="${book.title}"></li>
-                    </ul>
+                    <h3 class="head-content">Books</h3>
+
+                    <div th:if="${books != null}" class="wrapper-book">
+                        <div th:each="book : ${books.getContent()}" class="book">
+                            <div class="book-cover">
+                                <img src="#" th:src="@{http://localhost:8080{photo}(photo=${book.photo.path})}" alt="alt" />
+                            </div>
+                            <p class="title" th:text="${book.title}"></p>
+                            <p class="price" th:inline="text">$ [[${book.price}]]</p>
+                            <button class="btn btn-outline-primary">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <nav th:if="${books != null}" >
+                        <ul class="pagination justify-content-center">
+                            <li th:class="${books.offset == 0} ? 'disabled page-item'" class="page-item">
+                                <a class="page-link" th:href="@{/(offset = ${books.offset - 1})}">Previous</a>
+                            </li>
+
+                            <li th:each="page : ${#numbers.sequence(1, books.totalPages)}" th:class="${books.offset == (page - 1)} ? 'active page-item'" class="page-item">
+                                <a class="page-link" th:href="@{/(offset = ${page - 1})}" th:text="${page}"></a>
+                            </li>
+
+                            <li th:class="${books.offset + 1 == books.totalPages} ? 'disabled page-item'" class="page-item">
+                                <a class="page-link"  th:href="@{/(offset = ${books.offset + 1})}">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
