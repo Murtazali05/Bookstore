@@ -26,6 +26,7 @@ dependencies {
     compile('com.squareup.retrofit2:converter-jackson:2.4.0')
     compile('com.squareup.okhttp3:okhttp:3.9.0')
     compile('com.squareup.okhttp3:logging-interceptor:3.9.0')
+    compile('com.vk.api:sdk:0.5.12')
 
     runtime('org.springframework.boot:spring-boot-devtools')
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
