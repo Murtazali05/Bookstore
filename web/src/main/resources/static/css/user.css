@@ -21,10 +21,10 @@
     margin-bottom: 20px;
 }
 
-.main-content .left-menu .ava-img img {
+.main-content .left-menu .ava img {
     width: 250px;
     height: 250px;
-    border-radius: 100%;
+    border-radius: 50%;
 }
 
 .main-content .left-menu .ava a {

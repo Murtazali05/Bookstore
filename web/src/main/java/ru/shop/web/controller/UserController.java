@@ -1,6 +1,5 @@
 package ru.shop.web.controller;
 
-import com.vk.api.sdk.client.actors.Actor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,7 +17,6 @@ import ru.shop.web.model.user.TokenUser;
 import ru.shop.web.model.user.UserCreate;
 import ru.shop.web.model.user.UserLogin;
 import ru.shop.web.service.UserService;
-import ru.shop.web.service.VkAPIService;
 import ru.shop.web.util.ErrorUtil;
 
 import java.io.IOException;
@@ -30,7 +28,6 @@ public class UserController {
     private AuthSessionUtil authSession;
     private MessageContainer messages;
     private ErrorUtil errorUtil;
-    private VkAPIService vkAPI;
 
     @Autowired
     public void setRetrofit(Retrofit retrofit) {
@@ -50,11 +47,6 @@ public class UserController {
     @Autowired
     public void setErrorUtil(ErrorUtil errorUtil) {
         this.errorUtil = errorUtil;
-    }
-
-    @Autowired
-    public void setVkAPI(VkAPIService vkAPI) {
-        this.vkAPI = vkAPI;
     }
 
     @GetMapping("/login")
@@ -154,13 +146,6 @@ public class UserController {
     @GetMapping("/logout")
     public ModelAndView logout(){
         authSession.deleteFromSession();
-        return new ModelAndView("redirect:/");
-    }
-
-    @GetMapping("/login/vk")
-    public ModelAndView loginVk(@RequestParam("code") String code) {
-        Actor actor = vkAPI.loginVk(code);
-
         return new ModelAndView("redirect:/");
     }
 

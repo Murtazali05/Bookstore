@@ -5,6 +5,11 @@ public class Photo {
     private String path;
     private Integer size;
 
+    public Photo(Integer id, String path) {
+        this.id = id;
+        this.path = path;
+    }
+
     public Integer getId() {
         return id;
     }
