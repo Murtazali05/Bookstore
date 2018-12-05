@@ -1,5 +1,5 @@
 # Bookstore
-> Project created during the internship in Reksoft
+Project created during the internship in Reksoft
 
 #### Technology:
 * Java 8
